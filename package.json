@@ -5,7 +5,7 @@
   "description": "workspace booking system for my bachelor thesis",
   "scripts": {
     "client": "cd client && yarn start",
-    "server": "cd server && nodemon server.js",
+    "server": "cd server && yarn start",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "repository": {
