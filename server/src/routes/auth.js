@@ -16,7 +16,7 @@ router
     const user = await User.findOne({ username }).select('+password');
     if (!user) return res.status(404).json({ message: 'User Not Found' });
 
-    const correctPassword = bcrypt.compare(password, user.password);
+    const correctPassword = await bcrypt.compare(password, user.password);
 
     if (!correctPassword) { return res.status(400).json({ message: 'Password is incorrect' }); }
 
