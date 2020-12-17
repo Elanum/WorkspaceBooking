@@ -7,13 +7,17 @@ const opts = {
   secretOrKey: secret,
 };
 
-module.exports = (passport) => {
-  passport.use(new Strategy(opts, (payload, done) => {
+const authorize = (passport) => {
+  passport.use(
+    new Strategy(opts, (payload, done) => {
       User.findById(payload.id)
         .then((user) => {
-            if (user) return done(null, { id: user.id, username: user.username });
-            return done(null, false);
+          if (user) return done(null, user);
+          return done(null, false, { message: 'User not found' });
         })
-        .catch((error) => console.error(error.message));
-  }));
+        .catch((error) => done(error));
+    }),
+  );
 };
+
+module.exports = authorize;

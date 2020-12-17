@@ -19,7 +19,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    useFindAndModify: false
+    useFindAndModify: false,
   })
   .then(() => console.log(`MongoDB: connected to ${dbConnection}`))
   .catch((error) => console.error(`MongoDB: ${error.message}`));
@@ -43,8 +43,6 @@ app.use((_req, res) => {
   });
 });
 
-app.listen(port, () =>
-  console.log(`server started and listening on port ${port}!`),
-);
+app.listen(port, () => console.log(`server started and listening on port ${port}!`));
 
 module.exports = app;

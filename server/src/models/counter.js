@@ -23,7 +23,7 @@ const autoIncrementModelId = (modelName, doc, next) => {
     (error, counter) => {
       if (error) return next(error);
       doc.id = counter.seq;
-      next();
+      return next();
     },
   );
 };

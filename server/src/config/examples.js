@@ -1,3 +1,4 @@
+/* eslint-disable */
 import User from '../models/users';
 
 const admin = new User({
