@@ -22,6 +22,14 @@ const UserSchema = new mongoose.Schema({
     minlength: 6,
     select: false,
   },
+  firstname: {
+    type: String,
+    default: undefined,
+  },
+  lastname: {
+    type: String,
+    default: undefined,
+  },
 });
 
 UserSchema.plugin(validtor);
@@ -34,8 +42,9 @@ UserSchema.set('toJSON', {
   },
 });
 
+// eslint-disable-next-line func-names, consistent-return
 UserSchema.pre('save', function (next) {
-  let user = this;
+  const user = this;
 
   if (!user.isNew) {
     return next();
@@ -52,11 +61,9 @@ UserSchema.pre('save', function (next) {
     .then((salt) => bcrypt.hash(user.password, salt))
     .then((hash) => {
       user.password = hash;
-      next();
+      return next();
     })
-    .catch((error) => {
-      next(error);
-    });
+    .catch((error) => next(error));
 });
 
 module.exports = mongoose.model('User', UserSchema);

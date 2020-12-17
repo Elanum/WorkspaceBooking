@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "nodemon server.js --exec \"babel-node\"",
+    "start": "nodemon ./src/server.js --exec \"babel-node\"",
     "lint": "eslint ."
   },
   "dependencies": {
@@ -28,7 +28,12 @@
     "nodemon": "^2.0.6"
   },
   "eslintConfig": {
-    "extends": "airbnb-base"
+    "extends": "airbnb-base",
+    "rules": {
+      "no-underscore-dangle": "off",
+      "no-param-reassign": "off",
+      "no-unused-vars": "off"
+    }
   },
   "babel": {
     "presets": [
