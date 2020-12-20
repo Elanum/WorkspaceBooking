@@ -12,6 +12,7 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.7",
+    "mongoose-sequence": "^5.3.0",
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
@@ -28,11 +29,14 @@
     "nodemon": "^2.0.6"
   },
   "eslintConfig": {
-    "extends": "airbnb-base",
+    "extends": [
+      "airbnb-base"
+    ],
     "rules": {
       "no-underscore-dangle": "off",
       "no-param-reassign": "off",
-      "no-unused-vars": "off"
+      "no-unused-vars": "off",
+      "no-console": "off"
     }
   },
   "babel": {

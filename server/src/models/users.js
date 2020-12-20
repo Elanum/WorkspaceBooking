@@ -1,18 +1,15 @@
 import mongoose from 'mongoose';
 import validtor from 'mongoose-unique-validator';
 import bcrypt from 'bcrypt';
-import autoIncrementModelId from './counter';
+import sequence from 'mongoose-sequence';
+
+const AutoIncrement = sequence(mongoose);
 
 const UserSchema = new mongoose.Schema({
-  id: {
-    type: Number,
-    unique: true,
-    min: 1,
-  },
   username: {
     type: String,
     required: true,
-    minlength: 1,
+    minlength: 3,
     unique: true,
     trim: true,
   },
@@ -21,6 +18,17 @@ const UserSchema = new mongoose.Schema({
     required: true,
     minlength: 6,
     select: false,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    validate: {
+      validator(v) {
+        return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v);
+      },
+      message: 'Email is not valid',
+    },
   },
   firstname: {
     type: String,
@@ -34,36 +42,22 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.plugin(validtor);
 
-UserSchema.set('toJSON', {
-  transform: (_, obj) => {
-    delete obj.__v;
-    delete obj._id;
-    return obj;
-  },
-});
+UserSchema.plugin(AutoIncrement, { inc_field: 'id' });
 
-// eslint-disable-next-line func-names, consistent-return
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', async function save(next) {
   const user = this;
-
-  if (!user.isNew) {
-    return next();
-  }
-
-  autoIncrementModelId('users', this, next);
 
   if (!user.isModified('password')) {
     return next();
   }
 
-  bcrypt
-    .genSalt(12)
-    .then((salt) => bcrypt.hash(user.password, salt))
-    .then((hash) => {
-      user.password = hash;
-      return next();
-    })
-    .catch((error) => next(error));
+  try {
+    const salt = await bcrypt.genSalt(12);
+    user.password = await bcrypt.hash(user.password, salt);
+    return next();
+  } catch (e) {
+    return next(e);
+  }
 });
 
 module.exports = mongoose.model('User', UserSchema);
