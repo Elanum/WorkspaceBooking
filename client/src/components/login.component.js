@@ -1,26 +1,23 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
-
-import Form from 'react-validation/build/form';
-import Input from 'react-validation/build/input';
-import CheckButton from 'react-validation/build/button';
+import { Redirect, withRouter } from 'react-router-dom';
+import {
+  Form, Grid, Header, Segment, Message,
+} from 'semantic-ui-react';
 
 import { connect } from 'react-redux';
 import { login } from '../actions/auth';
-
-const required = (value) => !value && <div>This field is Required</div>;
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.handleLogin = this.handleLogin.bind(this);
-    this.onChangeUsername = this.onChangeUsername.bind(this);
-    this.onChangePassword = this.onChangePassword.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
 
     this.state = {
       username: '',
       password: '',
       loading: false,
+      errors: [],
     };
   }
 
@@ -31,15 +28,20 @@ class Login extends Component {
       loading: true,
     });
 
-    this.form.validateAll();
-
-    const { dispatch, history } = this.props;
+    const { dispatch } = this.props;
     const { username, password } = this.state;
+    const errors = [];
 
-    if (this.checkBtn.context._errors.length === 0) {
+    if (username.length === 0) errors.push('username');
+    if (password.length === 0) errors.push('password');
+
+    this.setState({
+      errors,
+    });
+
+    if (errors.length === 0) {
       dispatch(login(username, password))
         .then(() => {
-          history.push('/profile');
           window.location.reload();
         })
         .catch(() => {
@@ -54,16 +56,16 @@ class Login extends Component {
     }
   }
 
-  onChangeUsername(e) {
-    this.setState({
-      username: e.target.value,
-    });
+  handleInputChange(e) {
+    const { name, value } = e.target;
+    const obj = {};
+    obj[name] = value;
+    this.setState(obj);
   }
 
-  onChangePassword(e) {
-    this.setState({
-      password: e.target.value,
-    });
+  hasError(key) {
+    const { errors } = this.state;
+    return errors.indexOf(key) !== -1;
   }
 
   render() {
@@ -73,40 +75,56 @@ class Login extends Component {
     if (isLoggedIn) return <Redirect to="/profile" />;
 
     return (
-      <div>
-        <Form
-          onSubmit={this.handleLogin}
-          ref={(c) => {
-            this.form = c;
-          }}
-        >
-          <Input
-            type="text"
-            name="username"
-            value={username}
-            onChange={this.onChangeUsername}
-            validations={[required]}
-          />
-          <Input
-            type="password"
-            name="password"
-            value={password}
-            onChange={this.onChangePassword}
-            validations={[required]}
-          />
-          <button disabled={loading} type="submit">
-            {loading && <span>Loading...</span>}
-            <span>Login</span>
-          </button>
-          {message && <div>{message}</div>}
-          <CheckButton
-            style={{ display: 'none' }}
-            ref={(c) => {
-              this.checkBtn = c;
-            }}
-          />
-        </Form>
-      </div>
+      <Grid
+        textAlign="center"
+        style={{ height: '100vh' }}
+        verticalAlign="middle"
+      >
+        <Grid.Column style={{ maxWidth: 450 }}>
+          <Header as="h2" textAlign="center">
+            Login to your Account
+          </Header>
+          <Form size="large" onSubmit={this.handleLogin}>
+            <Segment>
+              <Form.Input
+                fluid
+                name="username"
+                icon="user"
+                iconPosition="left"
+                placeholder="Username"
+                onChange={this.handleInputChange}
+                value={username}
+                error={
+                  this.hasError('username') && { content: 'Username required' }
+                }
+              />
+              <Form.Input
+                fluid
+                name="password"
+                icon="lock"
+                iconPosition="left"
+                placeholder="Password"
+                type="password"
+                onChange={this.handleInputChange}
+                value={password}
+                error={
+                  this.hasError('password') && { content: 'Password required' }
+                }
+              />
+              <Form.Button
+                fluid
+                color="teal"
+                size="large"
+                type="submit"
+                loading={loading}
+              >
+                Login
+              </Form.Button>
+            </Segment>
+          </Form>
+          {message && <Message error>{message}</Message>}
+        </Grid.Column>
+      </Grid>
     );
   }
 }
@@ -120,4 +138,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Login);
+export default withRouter(connect(mapStateToProps)(Login));

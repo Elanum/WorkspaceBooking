@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { Container } from 'semantic-ui-react';
 import UserService from '../services/user.service';
 
 class Home extends Component {
@@ -32,7 +34,8 @@ class Home extends Component {
     const { content } = this.state;
 
     return (
-      <div>
+      <Container style={{ paddingTop: '7em' }}>
+        <h1>Users:</h1>
         {content && (
           <ul>
             {content.map((user) => (
@@ -45,9 +48,9 @@ class Home extends Component {
             ))}
           </ul>
         )}
-      </div>
+      </Container>
     );
   }
 }
 
-export default Home;
+export default withRouter(Home);

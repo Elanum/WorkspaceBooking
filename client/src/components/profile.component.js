@@ -1,20 +1,29 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Container } from 'semantic-ui-react';
 
 class Profile extends Component {
   render() {
     const { user: currentUser } = this.props;
+
+    console.log(currentUser);
 
     if (!currentUser) {
       return <Redirect to="/login" />;
     }
 
     return (
-      <div>
-        <h3>{currentUser.username}</h3>
-        <p>{currentUser.email}</p>
-      </div>
+      <Container text style={{ paddingTop: '7em' }}>
+        <h3>
+          <strong>{currentUser.username}</strong>
+          {' '}
+          Profile
+        </h3>
+        <p>
+          <strong>Token:</strong>
+        </p>
+      </Container>
     );
   }
 }
@@ -26,4 +35,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Profile);
+export default withRouter(connect(mapStateToProps)(Profile));

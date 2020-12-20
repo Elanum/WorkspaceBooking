@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {
   BrowserRouter, Switch, Route, Link,
 } from 'react-router-dom';
+import { Icon, Menu } from 'semantic-ui-react';
 
 import Login from './components/login.component';
 import Register from './components/register.component';
@@ -41,66 +42,40 @@ class App extends Component {
 
     return (
       <BrowserRouter>
-        <div>
-          <nav>
-            <Link to="/">
-              bezKoder
-            </Link>
-            <div>
-              <li>
-                <Link to="/home">
-                  Home
-                </Link>
-              </li>
-
-              {currentUser && (
-                <li>
-                  <Link to="/user">
-                    {currentUser.username}
-                  </Link>
-                </li>
-              )}
-            </div>
-
+        <Menu fixed="top">
+          <Menu.Item as={Link} to="/" header>
+            Workspace Booking
+          </Menu.Item>
+          <Menu.Menu position="right">
             {currentUser ? (
-              <div>
-                <li>
-                  <Link to="/profile">
-                    {currentUser.username}
-                  </Link>
-                </li>
-                <li>
-                  <a href="/login" onClick={this.logOut}>
-                    LogOut
-                  </a>
-                </li>
-              </div>
+              <>
+                <Menu.Item as={Link} to="/profile">
+                  <Icon name="user circle" />
+                </Menu.Item>
+                <Menu.Item as="a" onClick={this.logOut}>
+                  <Icon name="sign out" />
+                </Menu.Item>
+              </>
             ) : (
-              <div>
-                <li>
-                  <Link to="/login">
-                    Login
-                  </Link>
-                </li>
-
-                <li>
-                  <Link to="/register" className="nav-link">
-                    Sign Up
-                  </Link>
-                </li>
-              </div>
+              <>
+                <Menu.Item as={Link} to="/register">
+                  <Icon name="signup" />
+                </Menu.Item>
+                <Menu.Item as={Link} to="/login">
+                  <Icon name="sign in" />
+                </Menu.Item>
+              </>
             )}
-          </nav>
-
-          <div>
-            <Switch>
-              <Route exact path={['/', '/home']} component={Home} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/profile" component={Profile} />
-            </Switch>
-          </div>
-        </div>
+          </Menu.Menu>
+        </Menu>
+        <>
+          <Switch>
+            <Route exact path={['/', '/home']} component={Home} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/profile" component={Profile} />
+          </Switch>
+        </>
       </BrowserRouter>
     );
   }
