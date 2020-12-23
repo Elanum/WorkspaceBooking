@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container } from 'react-bootstrap';
 import * as actions from '../../actions';
 
 class Logout extends Component {
