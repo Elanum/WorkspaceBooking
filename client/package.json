@@ -36,6 +36,7 @@
     "lint": "eslint ."
   },
   "eslintConfig": {
+    "ignorePatterns": "*.html",
     "extends": [
       "react-app",
       "react-app/jest",
