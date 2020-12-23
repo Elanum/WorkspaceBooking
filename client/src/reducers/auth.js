@@ -1,52 +1,19 @@
-import {
-  REGISTER_SUCCESS,
-  REGISTER_FAIL,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
-  LOGOUT,
-} from '../actions/types';
+import { AUTH_USER, AUTH_ERROR } from '../actions/types';
 
-const user = JSON.parse(localStorage.getItem('user'));
+const INITIAL_STATE = {
+  authenticated: '',
+  errorMessage: '',
+};
 
-const initialState = user
-  ? { isLoggedIn: true, user }
-  : { isLoggedIn: false, user: null };
-
-const auth = (state = initialState, action) => {
-  const { type, payload } = action;
-
-  switch (type) {
-    case REGISTER_SUCCESS:
-      return {
-        ...state,
-        isLoggedIn: false,
-      };
-    case REGISTER_FAIL:
-      return {
-        ...state,
-        isLoggedIn: false,
-      };
-    case LOGIN_SUCCESS:
-      return {
-        ...state,
-        isLoggedIn: true,
-        user: payload.user,
-      };
-    case LOGIN_FAIL:
-      return {
-        ...state,
-        isLoggedIn: false,
-        user: null,
-      };
-    case LOGOUT:
-      return {
-        ...state,
-        isLoggedIn: false,
-        user: null,
-      };
+function auth(state = INITIAL_STATE, action) {
+  switch (action.type) {
+    case AUTH_USER:
+      return { ...state, authenticated: action.payload };
+    case AUTH_ERROR:
+      return { ...state, errorMessage: action.payload };
     default:
       return state;
   }
-};
+}
 
 export default auth;
