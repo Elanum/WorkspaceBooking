@@ -1,29 +1,37 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
+import UsersService from '../services/users.service';
 
 class Profile extends Component {
-  render() {
-    const { user: currentUser } = this.props;
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: undefined,
+    };
+  }
 
-    if (!currentUser) {
-      return <Redirect to="/login" />;
-    }
+  componentDidMount() {
+    const user = localStorage.getItem('user');
+    UsersService.getUser(user)
+      .then((response) => {
+        this.setState({
+          user: response.data,
+        });
+      })
+      .catch((error) => console.error(error));
+  }
+
+  render() {
+    const { user } = this.state;
+
+    if (!user) return <div>Loading...</div>;
 
     return (
       <div>
-        <h3>{currentUser.username}</h3>
-        <p>{currentUser.email}</p>
+        <h2>User:</h2>
+        <div>{user.username}</div>
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
-  const { user } = state.auth;
-  return {
-    user,
-  };
-}
-
-export default connect(mapStateToProps)(Profile);
+export default Profile;
