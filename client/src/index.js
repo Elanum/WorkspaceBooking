@@ -6,9 +6,9 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import reduxThunk from 'redux-thunk';
 
-import 'semantic-ui-css/semantic.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import PrivateRoute from './auth.routes';
+import PrivateRoute from './auth.route';
 import reducers from './reducers';
 import App from './components/app.component';
 import Home from './components/home.component';

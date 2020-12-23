@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Container } from 'react-bootstrap';
 import * as actions from '../../actions';
 
 class Logout extends Component {
   componentDidMount() {
     const { logout, history } = this.props;
     logout();
-    setTimeout(() => history.push('/login'), 3000);
+    history.push('/login');
   }
 
   render() {
-    return <div>Bye!</div>;
+    return <div>Logging out...</div>;
   }
 }
 

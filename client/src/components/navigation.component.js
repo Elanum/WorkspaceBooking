@@ -1,31 +1,35 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Nav, Navbar } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOutAlt, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
 class Navigation extends Component {
-  renderLinks() {
-    const { authenticated } = this.props;
-    if (authenticated) {
-      return (
-        <div>
-          <Link to="/logout">Logout</Link>
-          <Link to="/profile">Profile</Link>
-        </div>
-      );
-    }
-    return (
-      <div>
-        <Link to="/login">Login</Link>
-      </div>
-    );
-  }
-
   render() {
+    const { authenticated } = this.props;
+
     return (
-      <div className="header">
-        <Link to="/">Redux Auth</Link>
-        {this.renderLinks()}
-      </div>
+      authenticated && (
+        <Navbar expand="lg" bg="light" sticky="top">
+          <Navbar.Brand as={NavLink} to="/">
+            Workspace Booking
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="main-nav" />
+          <Navbar.Collapse id="main-nav">
+            <Nav className="ml-auto">
+              <Nav.Link as={NavLink} to="/profile">
+                <FontAwesomeIcon icon={faUserCircle} />
+                <span className="d-lg-none ml-2">{authenticated.username}</span>
+              </Nav.Link>
+              <Nav.Link as={NavLink} to="/logout">
+                <FontAwesomeIcon icon={faSignOutAlt} />
+                <span className="d-lg-none ml-2">Logout</span>
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+      )
     );
   }
 }

@@ -1,10 +1,11 @@
 import React from 'react';
+import { Container } from 'react-bootstrap';
 import Navigation from './navigation.component';
 
 const App = ({ children }) => (
   <div>
     <Navigation />
-    <div>{children}</div>
+    <Container>{children}</Container>
   </div>
 );
 
