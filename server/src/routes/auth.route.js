@@ -2,7 +2,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
-import User from '../models/users';
+import User from '../models/users.model';
 
 const router = express.Router();
 const secret = process.env.SECRET || 'jwtsecret';

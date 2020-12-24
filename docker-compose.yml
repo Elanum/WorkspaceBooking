@@ -15,18 +15,16 @@ services:
     build: ./server
     volumes:
       - ./server/src:/usr/app/server/src
-    environment:
-      - SECRET=${SECRET}
-      - SERVER_PORT=${SERVER_PORT}
-      - DB_PORT=${DB_PORT}
-      - DB_HOST=${DB_HOST}
-      - DB_NAME=${DB_NAME}
+    env_file:
+      - .env
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
 
   client:
     container_name: client
     build: ./client
+    env_file:
+      - .env
     volumes:
       - ./client/src:/usr/app/client/src
       - ./client/public:/usr/app/client/public

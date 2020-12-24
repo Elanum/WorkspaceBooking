@@ -21,7 +21,7 @@ const UserSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true,
+    required: false,
     unique: true,
     validate: {
       validator(v) {
@@ -42,7 +42,17 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.plugin(validtor);
 
-UserSchema.plugin(AutoIncrement, { inc_field: 'id' });
+UserSchema.plugin(AutoIncrement, { inc_field: 'userId' });
+
+UserSchema.virtual('bookings', {
+  ref: 'Booking',
+  localField: '_id',
+  foreignField: 'user',
+});
+
+UserSchema.set('toJSON', { virtuals: true });
+
+UserSchema.set('id', false);
 
 UserSchema.pre('save', async function save(next) {
   const user = this;
