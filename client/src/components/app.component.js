@@ -5,7 +5,7 @@ import Navigation from './navigation.component';
 const App = ({ children }) => (
   <div>
     <Navigation />
-    <Container>{children}</Container>
+    <Container className="pt-3">{children}</Container>
   </div>
 );
 
