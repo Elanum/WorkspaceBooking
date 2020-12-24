@@ -1,5 +1,5 @@
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import User from '../models/users';
+import User from '../models/users.model';
 
 const secret = process.env.SECRET || 'jwtsecret';
 const opts = {

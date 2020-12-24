@@ -3,8 +3,11 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import logger from 'morgan';
 import passport from 'passport';
-import usersRouter from './routes/users';
-import authRouter from './routes/auth';
+import usersRouter from './routes/users.route';
+import authRouter from './routes/auth.route';
+import roomsRouter from './routes/rooms.route';
+import workspacesRouter from './routes/workspaces.route';
+import bookingsRouter from './routes/bookings.route';
 
 const app = express();
 const port = process.env.SERVER_PORT || 5000;
@@ -12,6 +15,7 @@ const dbPort = process.env.DB_PORT || 27017;
 const dbHost = process.env.DB_HOST || 'localhost';
 const dbName = process.env.DB_NAME || 'dev';
 const dbConnection = `mongodb://${dbHost}:${dbPort}/${dbName}`;
+const apiPrefix = '/api';
 
 mongoose
   .connect(dbConnection, {
@@ -29,12 +33,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(passport.initialize());
 
-require('./config/passport')(passport);
+require('./config/passport.config')(passport);
 
-require('./config/examples');
+require('./defaults/users.defaults');
+require('./defaults/rooms.defaults');
 
-app.use('/api/', authRouter);
-app.use('/api/', usersRouter);
+app.use(apiPrefix, authRouter);
+app.use(apiPrefix, usersRouter);
+app.use(apiPrefix, roomsRouter);
+app.use(apiPrefix, workspacesRouter);
+app.use(apiPrefix, bookingsRouter);
 
 app.use((_req, res) => {
   res.status(404).json({
