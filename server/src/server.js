@@ -12,8 +12,8 @@ import bookingsRouter from './routes/bookings.route';
 const app = express();
 const port = process.env.SERVER_PORT || 5000;
 const dbPort = process.env.DB_PORT || 27017;
-const dbHost = process.env.DB_HOST || 'localhost';
-const dbName = process.env.DB_NAME || 'dev';
+const dbHost = process.env.DB_HOST || 'database';
+const dbName = process.env.DB_NAME || 'workspace-booking';
 const dbConnection = `mongodb://${dbHost}:${dbPort}/${dbName}`;
 const apiPrefix = '/api';
 
@@ -37,6 +37,7 @@ require('./config/passport.config')(passport);
 
 require('./defaults/users.defaults');
 require('./defaults/rooms.defaults');
+require('./defaults/workspaces.defaults');
 
 app.use(apiPrefix, authRouter);
 app.use(apiPrefix, usersRouter);
