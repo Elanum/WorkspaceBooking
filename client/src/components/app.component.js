@@ -1,12 +1,11 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
 import Navigation from './navigation.component';
 
 const App = ({ children }) => (
-  <div>
+  <>
     <Navigation />
-    <Container className="pt-3">{children}</Container>
-  </div>
+    <div className="pt-3 h-100">{children}</div>
+  </>
 );
 
 export default App;
