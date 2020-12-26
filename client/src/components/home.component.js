@@ -1,8 +1,9 @@
 import React from 'react';
+import { Container } from 'react-bootstrap';
 
 const home = () => (
-  <div>
+  <Container>
     <h3>Welcome!</h3>
-  </div>
+  </Container>
 );
 export default home;

@@ -3,7 +3,13 @@ import { reduxForm, Field } from 'redux-form';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import {
-  Form, FormControl, Button, Alert, Row, Col,
+  Form,
+  FormControl,
+  Button,
+  Alert,
+  Row,
+  Col,
+  Container,
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
@@ -21,7 +27,7 @@ class Login extends Component {
   onSubmit = (props) => {
     const { login, history } = this.props;
     login(props, () => {
-      history.push('/profile');
+      history.push(`/profile/${props.username}`);
     });
   };
 
@@ -29,45 +35,44 @@ class Login extends Component {
     const { handleSubmit, errorMessage } = this.props;
 
     return (
-      <Row
-        className="justify-content-center align-items-center text-center"
-        style={{ height: 'calc(100vh - 56px)' }}
-      >
-        <Col md="4">
-          <h1>
-            <FontAwesomeIcon icon={faBriefcase} />
-          </h1>
-          <br />
-          <Form onSubmit={handleSubmit(this.onSubmit)}>
-            <Form.Group>
-              <Field
-                name="username"
-                type="text"
-                component={Input}
-                placeholder="Username"
-              />
-            </Form.Group>
-            <Form.Group>
-              <Field
-                name="password"
-                type="password"
-                component={Input}
-                placeholder="Password"
-              />
-            </Form.Group>
-            {errorMessage && (
+      <Container className="h-100" style={{ paddingBottom: '56px' }}>
+        <Row className="justify-content-center align-items-center text-center h-100">
+          <Col md="4">
+            <h1>
+              <FontAwesomeIcon icon={faBriefcase} />
+            </h1>
+            <br />
+            <Form onSubmit={handleSubmit(this.onSubmit)}>
               <Form.Group>
-                <Alert variant="danger">{errorMessage}</Alert>
+                <Field
+                  name="username"
+                  type="text"
+                  component={Input}
+                  placeholder="Username"
+                />
               </Form.Group>
-            )}
-            <Form.Group>
-              <Button type="submit" block>
-                Login
-              </Button>
-            </Form.Group>
-          </Form>
-        </Col>
-      </Row>
+              <Form.Group>
+                <Field
+                  name="password"
+                  type="password"
+                  component={Input}
+                  placeholder="Password"
+                />
+              </Form.Group>
+              {errorMessage && (
+                <Form.Group>
+                  <Alert variant="danger">{errorMessage}</Alert>
+                </Form.Group>
+              )}
+              <Form.Group>
+                <Button type="submit" block>
+                  Login
+                </Button>
+              </Form.Group>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }

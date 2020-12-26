@@ -1,47 +1,69 @@
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Nav, Navbar } from 'react-bootstrap';
+import { Button, Nav, Navbar } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faSignOutAlt,
   faUserCircle,
   faBriefcase,
   faDoorOpen,
+  faDesktop,
+  faCalendarCheck,
 } from '@fortawesome/free-solid-svg-icons';
 
 class Navigation extends Component {
   render() {
     const { authenticated } = this.props;
 
+    const profile = (authenticated && authenticated.username) || localStorage.getItem('user');
+
     return (
       authenticated && (
         <>
-          <Navbar expand="lg" bg="primary" variant="dark" sticky="top">
-            <Navbar.Brand as={NavLink} to="/">
+          <Navbar
+            expand="lg"
+            bg="primary"
+            variant="dark"
+            fixed="top"
+            collapseOnSelect
+          >
+            <Navbar.Brand>
               <FontAwesomeIcon icon={faBriefcase} />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="main-nav" />
             <Navbar.Collapse id="main-nav">
               <Nav>
-                <Nav.Link as={NavLink} to="/rooms">
+                <Nav.Link exact as={NavLink} to={`/profile/${profile}`} eventKey="3">
+                  <FontAwesomeIcon icon={faUserCircle} />
+                  {' '}
+                  {profile}
+                </Nav.Link>
+                <Nav.Link exact as={NavLink} to="/rooms" eventKey="0">
                   <FontAwesomeIcon icon={faDoorOpen} />
                   {' '}
                   Rooms
                 </Nav.Link>
-              </Nav>
-              <Nav className="ml-auto">
-                <Nav.Link as={NavLink} to="/profile">
-                  <FontAwesomeIcon icon={faUserCircle} />
+                <Nav.Link exact as={NavLink} to="/workspaces" eventKey="1">
+                  <FontAwesomeIcon icon={faDesktop} />
                   {' '}
-                  {authenticated.username || localStorage.getItem('user')}
+                  Workspaces
                 </Nav.Link>
-                <Nav.Link as={NavLink} to="/logout">
-                  <FontAwesomeIcon icon={faSignOutAlt} />
+                <Nav.Link exact as={NavLink} to="/bookings" eventKey="2">
+                  <FontAwesomeIcon icon={faCalendarCheck} />
                   {' '}
-                  Logout
+                  Bookings
                 </Nav.Link>
               </Nav>
+              <Nav.Item className="ml-auto">
+                <Link to="/logout">
+                  <Button variant="outline-light">
+                    <FontAwesomeIcon icon={faSignOutAlt} />
+                    {' '}
+                    Logout
+                  </Button>
+                </Link>
+              </Nav.Item>
             </Navbar.Collapse>
           </Navbar>
         </>

@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 import {
-  Card, Col, Container, Row,
+  Card, Container, Col, Row,
 } from 'react-bootstrap';
-import RoomsService from '../services/rooms.service';
+import WorkspacesService from '../services/workspaces.service';
 
-class Rooms extends Component {
+class Workspaces extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rooms: undefined,
+      workspaces: undefined,
       error: undefined,
     };
   }
 
   componentDidMount() {
-    RoomsService.getAllRooms()
+    WorkspacesService.getAllWorkspaces()
       .then((response) => {
         this.setState({
-          rooms: response.data,
+          workspaces: response.data,
         });
       })
       .catch((error) => {
@@ -28,26 +28,21 @@ class Rooms extends Component {
   }
 
   render() {
-    const { rooms, error } = this.state;
+    const { workspaces, error } = this.state;
 
     if (error) return <Container>{error.message}</Container>;
-    if (!rooms) return <Container>Loading...</Container>;
+    if (!workspaces) return <Container>Loading...</Container>;
 
     return (
       <Container>
-        <h2>Rooms:</h2>
+        <h2>Workspaces</h2>
         <Row>
-          {rooms.map((room) => (
-            <Col key={room._id} md="6" className="mb-3">
+          {workspaces.map((workspace) => (
+            <Col key={workspace._id} md="6" className="mb-3">
               <Card className="shadow">
+                <Card.Header>{workspace.room.name}</Card.Header>
                 <Card.Body>
-                  <Card.Title>{room.name}</Card.Title>
-                  <Card.Text>
-                    Workspaces:
-                    {' '}
-                    {room.workspaces.length}
-                  </Card.Text>
-                  <Card.Link>Details</Card.Link>
+                  <Card.Title>{workspace.name}</Card.Title>
                 </Card.Body>
               </Card>
             </Col>
@@ -58,4 +53,4 @@ class Rooms extends Component {
   }
 }
 
-export default Rooms;
+export default Workspaces;

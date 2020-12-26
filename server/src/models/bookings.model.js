@@ -18,11 +18,6 @@ const BookingSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  time: {
-    type: String,
-    enum: ['day', 'am', 'pm'],
-    required: true,
-  },
 });
 
 BookingSchema.plugin(AutoIncrement, { inc_field: 'bookingId' });
