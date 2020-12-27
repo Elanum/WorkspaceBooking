@@ -8,6 +8,7 @@ export const GET_ROOMS = 'GET_ROOMS';
 export const ROOMS_ERROR = 'ROOMS_ERROR';
 
 export const GET_WORKSPACES = 'GET_WORKSPACES';
+export const POST_BOOKINGS = 'POST_BOOKINGS';
 export const WORKSPACES_ERROR = 'WORKSPACES_ERROR';
 
 export const GET_BOOKINGS = 'GET_BOOKINGS';

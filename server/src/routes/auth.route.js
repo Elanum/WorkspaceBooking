@@ -13,8 +13,12 @@ router
   .post(async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username }).select('+password');
-    if (!username) { return res.status(400).json({ message: 'Please enter a username' }); }
-    if (!password) { return res.status(400).json({ message: 'Please enter a password' }); }
+    if (!username) {
+      return res.status(400).json({ message: 'Please enter a username' });
+    }
+    if (!password) {
+      return res.status(400).json({ message: 'Please enter a password' });
+    }
     if (!user) return res.status(404).json({ message: 'Invalid Credentials' });
 
     const correctPassword = await bcrypt.compare(password, user.password);
@@ -31,6 +35,7 @@ router
 
     return res.status(200).json({
       username,
+      _id: user._id,
       token,
       expiresIn,
       type: 'Bearer',

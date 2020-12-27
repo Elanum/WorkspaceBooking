@@ -41,7 +41,11 @@ ReactDOM.render(
           <PrivateRoute exact path="/bookings" component={Bookings} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/logout" component={Logout} />
-          <Redirect exact from="/" to={`/profile/${user.username}`} />
+          <Redirect
+            exact
+            from="/"
+            to={user ? `/profile/${user.username}` : '/login'}
+          />
           <Route path="*" component={NotFound} />
         </Switch>
       </App>

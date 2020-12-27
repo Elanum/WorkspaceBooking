@@ -5,6 +5,7 @@ import {
   Card, Container, Col, Row,
 } from 'react-bootstrap';
 import * as actions from '../actions';
+import NewBooking from '../components/newbooking.component';
 
 class Workspaces extends Component {
   componentDidMount() {
@@ -29,6 +30,9 @@ class Workspaces extends Component {
                 <Card.Body>
                   <Card.Title>{workspace.name}</Card.Title>
                 </Card.Body>
+                <Card.Footer>
+                  <NewBooking workspace={workspace} />
+                </Card.Footer>
               </Card>
             </Col>
           ))}

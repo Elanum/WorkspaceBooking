@@ -23,6 +23,7 @@ const Input = ({ input, type, placeholder }) => (
     onChange={input.onChange}
   />
 );
+
 class Login extends Component {
   onSubmit = (props) => {
     const { login, history } = this.props;
