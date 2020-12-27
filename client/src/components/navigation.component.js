@@ -16,7 +16,7 @@ class Navigation extends Component {
   render() {
     const { authenticated } = this.props;
 
-    const profile = (authenticated && authenticated.username) || localStorage.getItem('user');
+    const profile = authenticated && authenticated.username;
 
     return (
       authenticated && (
@@ -34,7 +34,12 @@ class Navigation extends Component {
             <Navbar.Toggle aria-controls="main-nav" />
             <Navbar.Collapse id="main-nav">
               <Nav>
-                <Nav.Link exact as={NavLink} to={`/profile/${profile}`} eventKey="3">
+                <Nav.Link
+                  exact
+                  as={NavLink}
+                  to={`/profile/${profile}`}
+                  eventKey="3"
+                >
                   <FontAwesomeIcon icon={faUserCircle} />
                   {' '}
                   {profile}
