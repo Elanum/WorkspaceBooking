@@ -50,7 +50,7 @@ router
           },
         })
         .then((user) => {
-          if (user.length === 0) {
+          if (!user) {
             return res.status(404).json({ message: 'User Not Found' });
           }
           return res.status(200).json(user);
