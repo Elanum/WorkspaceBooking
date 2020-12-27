@@ -1,36 +1,21 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import {
   Card, Col, Container, Row,
 } from 'react-bootstrap';
-import RoomsService from '../services/rooms.service';
+import * as actions from '../actions';
 
 class Rooms extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      rooms: undefined,
-      error: undefined,
-    };
-  }
-
   componentDidMount() {
-    RoomsService.getAllRooms()
-      .then((response) => {
-        this.setState({
-          rooms: response.data,
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          error: error.response.data,
-        });
-      });
+    const { getAllRooms } = this.props;
+    getAllRooms();
   }
 
   render() {
-    const { rooms, error } = this.state;
+    const { rooms, errorMessage } = this.props;
 
-    if (error) return <Container>{error.message}</Container>;
+    if (errorMessage) return <Container>{errorMessage}</Container>;
     if (!rooms) return <Container>Loading...</Container>;
 
     return (
@@ -58,4 +43,8 @@ class Rooms extends Component {
   }
 }
 
-export default Rooms;
+function mapStateToProps(state) {
+  return { rooms: state.rooms.rooms, errorMessage: state.rooms.errorMessage };
+}
+
+export default compose(connect(mapStateToProps, actions))(Rooms);

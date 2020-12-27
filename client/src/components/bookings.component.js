@@ -1,37 +1,21 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import { Container, Table } from 'react-bootstrap';
-import BookingsService from '../services/bookings.service';
+import * as actions from '../actions';
 
 class Bookings extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      bookings: undefined,
-      error: undefined,
-    };
-  }
-
   componentDidMount() {
-    BookingsService.getAllBookings()
-      .then((response) => {
-        this.setState({
-          bookings: response.data,
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          error: error.response.data,
-        });
-      });
+    const { getAllBookings } = this.props;
+    getAllBookings();
   }
 
   render() {
-    const { bookings, error } = this.state;
+    const { bookings, errorMessage } = this.props;
 
-    if (error) return <Container>{error.message}</Container>;
+    if (errorMessage) return <Container>{errorMessage}</Container>;
     if (!bookings) return <Container>Loading...</Container>;
 
-    // TODO: Filter Option
     return (
       <Container>
         <Table striped hover bordered responsive>
@@ -61,4 +45,11 @@ class Bookings extends Component {
   }
 }
 
-export default Bookings;
+function mapStateToProps(state) {
+  return {
+    bookings: state.bookings.bookings,
+    errorMessage: state.bookings.errorMessage,
+  };
+}
+
+export default compose(connect(mapStateToProps, actions))(Bookings);

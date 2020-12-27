@@ -1,45 +1,23 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import {
   Alert, Card, Col, Container, Row, Table,
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import UsersService from '../services/users.service';
+import * as actions from '../actions';
 
 class Profile extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: undefined,
-      error: undefined,
-    };
-  }
-
   componentDidMount() {
-    const {
-      match: { params },
-    } = this.props;
-    UsersService.getUser(params.username)
-      .then((response) => {
-        const futureBookings = response.data.bookings.filter(
-          (bookings) => new Date(bookings.date).getTime() > Date.now(),
-        );
-        response.data.bookings = futureBookings;
-        this.setState({
-          user: response.data,
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          error: error.response.data,
-        });
-      });
+    const { getUser, match: { params } } = this.props;
+    getUser(params);
   }
 
   render() {
-    const { user, error } = this.state;
+    const { user, errorMessage } = this.props;
 
-    if (error) return <Container>{error.message}</Container>;
+    if (errorMessage) return <Container>{errorMessage}</Container>;
     if (!user) return <Container>Loading...</Container>;
 
     return (
@@ -111,4 +89,8 @@ class Profile extends Component {
   }
 }
 
-export default Profile;
+function mapStateToProps(state) {
+  return { user: state.users.user, errorMessage: state.users.errorMessage };
+}
+
+export default compose(connect(mapStateToProps, actions))(Profile);

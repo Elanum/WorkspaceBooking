@@ -1,36 +1,21 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import {
   Card, Container, Col, Row,
 } from 'react-bootstrap';
-import WorkspacesService from '../services/workspaces.service';
+import * as actions from '../actions';
 
 class Workspaces extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      workspaces: undefined,
-      error: undefined,
-    };
-  }
-
   componentDidMount() {
-    WorkspacesService.getAllWorkspaces()
-      .then((response) => {
-        this.setState({
-          workspaces: response.data,
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          error: error.response.data,
-        });
-      });
+    const { getAllWorkspaces } = this.props;
+    getAllWorkspaces();
   }
 
   render() {
-    const { workspaces, error } = this.state;
+    const { workspaces, errorMessage } = this.props;
 
-    if (error) return <Container>{error.message}</Container>;
+    if (errorMessage) return <Container>{errorMessage}</Container>;
     if (!workspaces) return <Container>Loading...</Container>;
 
     return (
@@ -53,4 +38,8 @@ class Workspaces extends Component {
   }
 }
 
-export default Workspaces;
+function mapStateToProps(state) {
+  return { workspaces: state.workspaces.workspaces, errorMessage: state.workspaces.errorMessage };
+}
+
+export default compose(connect(mapStateToProps, actions))(Workspaces);
