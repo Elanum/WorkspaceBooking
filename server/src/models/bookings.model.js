@@ -1,7 +1,4 @@
 import mongoose from 'mongoose';
-import sequence from 'mongoose-sequence';
-
-const AutoIncrement = sequence(mongoose);
 
 const formatDate = (_doc, obj) => {
   if (obj && obj.date) {
@@ -17,26 +14,44 @@ const BookingSchema = new mongoose.Schema({
     ref: 'Workspace',
     required: true,
   },
-  user: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'User',
-    required: true,
-  },
   date: {
     type: Date,
     required: true,
+    min: new Date().toISOString().slice(0, 10),
   },
-  time: {
-    type: String,
-    required: true,
-    enum: ['am', 'pm', 'day'],
+  bookedAM: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    default: null,
+  },
+  bookedPM: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    default: null,
+  },
+  bookedState: {
+    type: Number,
+    default: 0,
   },
 });
-
-BookingSchema.plugin(AutoIncrement, { inc_field: 'bookingId' });
 
 BookingSchema.set('toJSON', { virtuals: true, transform: formatDate });
 
 BookingSchema.set('id', false);
+
+BookingSchema.pre('save', function setState(next) {
+  const booking = this;
+
+  let state = 0;
+  if (booking.bookedPM) state += 1;
+  if (!booking.bookedAM) state += 1;
+
+  try {
+    booking.bookedState = state;
+    return next();
+  } catch (e) {
+    return next(e);
+  }
+});
 
 module.exports = mongoose.model('Booking', BookingSchema);

@@ -11,7 +11,8 @@ router
     (_req, res) => {
       Booking.find()
         .sort('date')
-        .populate('user')
+        .populate('bookedAM')
+        .populate('bookedPM')
         .populate({
           path: 'workspace',
           populate: {
@@ -33,13 +34,31 @@ router
   .post(
     passport.authenticate('jwt', { session: false, failWithError: true }),
     async (req, res) => {
-      const booking = new Booking({ ...req.body });
+      const {
+        workspace, date, bookedAM, bookedPM,
+      } = req.body;
+      const update = {};
+      if (bookedAM) update.bookedAM = bookedAM;
+      if (bookedPM) update.bookedPM = bookedPM;
+
+      let booking = await Booking.findOne({ workspace, date });
+
+      if (!booking) {
+        booking = new Booking({ ...req.body });
+      } else {
+        if (booking.bookedAM && booking.bookedPM) {
+          return res.status(423).json({ message: `Worksplace is already occupied on ${date}` });
+        }
+        booking.bookedAM = bookedAM || booking.bookedAM;
+        booking.bookedPM = bookedPM || booking.bookedPM;
+      }
+
       try {
         await booking.save();
+        return res.status(200).json(booking);
       } catch (error) {
-        return res.status(400).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
       }
-      return res.status(201).json(booking);
     },
     (error, _req, res, _next) => {
       res.status(error.status || 500).json({ message: error.message });

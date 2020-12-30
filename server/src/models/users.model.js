@@ -47,7 +47,13 @@ UserSchema.plugin(AutoIncrement, { inc_field: 'userId' });
 UserSchema.virtual('bookings', {
   ref: 'Booking',
   localField: '_id',
-  foreignField: 'user',
+  foreignField: 'bookedAM',
+});
+
+UserSchema.virtual('bookings', {
+  ref: 'Booking',
+  localField: '_id',
+  foreignField: 'bookedPM',
 });
 
 UserSchema.set('toJSON', { virtuals: true });

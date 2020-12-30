@@ -24,9 +24,9 @@ class Bookings extends Component {
               <th>#</th>
               <th>Room</th>
               <th>Workspace</th>
-              <th>User</th>
+              <th>Booked AM</th>
+              <th>Booked PM</th>
               <th>Date</th>
-              <th>Time</th>
             </tr>
           </thead>
           <tbody>
@@ -35,9 +35,9 @@ class Bookings extends Component {
                 <td>{booking.bookingId}</td>
                 <td>{booking.workspace.room.name}</td>
                 <td>{booking.workspace.name}</td>
-                <td>{booking.user.username}</td>
+                <td>{booking.bookedAM ? booking.bookedAM.username : '' }</td>
+                <td>{booking.bookedPM ? booking.bookedPM.username : '' }</td>
                 <td>{new Date(booking.date).toLocaleDateString()}</td>
-                <td>{booking.time}</td>
               </tr>
             ))}
           </tbody>

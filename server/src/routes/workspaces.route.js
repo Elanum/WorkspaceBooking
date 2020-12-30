@@ -12,7 +12,17 @@ router
       Workspace.find()
         .sort('workspaceId')
         .populate('room')
-        .populate('bookings')
+        .populate({
+          path: 'bookings',
+          populate: [
+            {
+              path: 'bookedAM',
+            },
+            {
+              path: 'bookedPM',
+            },
+          ],
+        })
         .then((workspaces) => {
           if (workspaces.length === 0) {
             return res.status(404).json({ message: 'No Workspaces Found' });
