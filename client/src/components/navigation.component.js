@@ -11,10 +11,17 @@ import {
   faDesktop,
   faCalendarCheck,
 } from '@fortawesome/free-solid-svg-icons';
+import * as actions from '../actions';
 
 class Navigation extends Component {
   render() {
-    const { authenticated } = this.props;
+    const {
+      authenticated,
+      getUser,
+      getAllRooms,
+      getAllWorkspaces,
+      getAllBookings,
+    } = this.props;
 
     const profile = authenticated && authenticated.username;
 
@@ -38,23 +45,42 @@ class Navigation extends Component {
                   exact
                   as={NavLink}
                   to={`/profile/${profile}`}
+                  onClick={() => getUser({ username: profile })}
                   eventKey="3"
                 >
                   <FontAwesomeIcon icon={faUserCircle} />
                   {' '}
                   {profile}
                 </Nav.Link>
-                <Nav.Link exact as={NavLink} to="/rooms" eventKey="0">
+                <Nav.Link
+                  exact
+                  as={NavLink}
+                  to="/rooms"
+                  onClick={() => getAllRooms()}
+                  eventKey="0"
+                >
                   <FontAwesomeIcon icon={faDoorOpen} />
                   {' '}
                   Rooms
                 </Nav.Link>
-                <Nav.Link exact as={NavLink} to="/workspaces" eventKey="1">
+                <Nav.Link
+                  exact
+                  as={NavLink}
+                  to="/workspaces"
+                  onClick={() => getAllWorkspaces()}
+                  eventKey="1"
+                >
                   <FontAwesomeIcon icon={faDesktop} />
                   {' '}
                   Workspaces
                 </Nav.Link>
-                <Nav.Link exact as={NavLink} to="/bookings" eventKey="2">
+                <Nav.Link
+                  exact
+                  as={NavLink}
+                  to="/bookings"
+                  onClick={() => getAllBookings()}
+                  eventKey="2"
+                >
                   <FontAwesomeIcon icon={faCalendarCheck} />
                   {' '}
                   Bookings
@@ -81,4 +107,4 @@ function mapStateToProps(state) {
   return { authenticated: state.auth.authenticated };
 }
 
-export default connect(mapStateToProps)(Navigation);
+export default connect(mapStateToProps, actions)(Navigation);
