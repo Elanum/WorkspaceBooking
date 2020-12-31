@@ -9,11 +9,15 @@ const rooms = [
   },
 ];
 
-Room.findOne().then((room) => {
-  if (!room) {
-    rooms.forEach((element) => {
-      const newRoom = new Room(element);
-      newRoom.save();
-    });
-  }
-});
+const addRooms = () => {
+  Room.findOne().then((room) => {
+    if (!room) {
+      rooms.forEach((element) => {
+        const newRoom = new Room(element);
+        newRoom.save();
+      });
+    }
+  });
+};
+
+export default addRooms;

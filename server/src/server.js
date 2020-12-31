@@ -35,9 +35,7 @@ app.use(passport.initialize());
 
 require('./config/passport.config')(passport);
 
-require('./defaults/users.defaults');
-require('./defaults/rooms.defaults');
-require('./defaults/workspaces.defaults');
+require('./defaults/init.defaults');
 
 app.use(apiPrefix, authRouter);
 app.use(apiPrefix, usersRouter);
