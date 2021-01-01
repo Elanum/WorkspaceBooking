@@ -2,7 +2,7 @@ import axios from 'axios';
 import { BOOKINGS_ERROR, GET_WORKSPACES, WORKSPACES_ERROR } from './types';
 import { authHeader, API_URL } from '../config/api.config';
 
-const getAllWorkspaces = () => async (dispatch) => {
+const getWorkspaces = () => async (dispatch) => {
   axios
     .get(`${API_URL}/workspaces`, authHeader())
     .then(({ data }) => {
@@ -15,4 +15,4 @@ const getAllWorkspaces = () => async (dispatch) => {
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export { getAllWorkspaces };
+export { getWorkspaces };

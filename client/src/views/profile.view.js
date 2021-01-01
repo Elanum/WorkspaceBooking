@@ -1,8 +1,15 @@
+/* eslint-disable no-nested-ternary */
 import React, { Component } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import {
-  Alert, Card, Col, Container, Row, Table,
+  Alert,
+  Badge,
+  Card,
+  Col,
+  Container,
+  Row,
+  Table,
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
@@ -10,7 +17,10 @@ import * as actions from '../actions';
 
 class Profile extends Component {
   componentDidMount() {
-    const { getUser, match: { params } } = this.props;
+    const {
+      getUser,
+      match: { params },
+    } = this.props;
     getUser(params);
   }
 
@@ -63,19 +73,33 @@ class Profile extends Component {
                 <Table hover striped>
                   <thead>
                     <tr>
-                      <th>#</th>
+                      <th>Date</th>
                       <th>Room</th>
                       <th>Workspace</th>
-                      <th>Date</th>
+                      <th>Booked</th>
                     </tr>
                   </thead>
                   <tbody>
                     {user.bookings.map((booking) => (
                       <tr key={booking._id}>
-                        <td>{booking.bookingId}</td>
+                        <td>{new Date(booking.date).toLocaleDateString()}</td>
                         <td>{booking.workspace.room.name}</td>
                         <td>{booking.workspace.name}</td>
-                        <td>{new Date(booking.date).toLocaleString()}</td>
+                        <td>
+                          {booking.bookedAM && booking.bookedPM ? (
+                            <Badge pill variant="success">
+                              DAY
+                            </Badge>
+                          ) : booking.bookedAM ? (
+                            <Badge pill variant="primary">
+                              AM
+                            </Badge>
+                          ) : (
+                            <Badge pill variant="secondary">
+                              PM
+                            </Badge>
+                          )}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

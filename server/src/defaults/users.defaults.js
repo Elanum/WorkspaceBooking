@@ -18,11 +18,15 @@ const users = [
   },
 ];
 
-User.findOne().then((user) => {
-  if (!user) {
-    users.forEach((element) => {
-      const newUser = new User(element);
-      newUser.save();
-    });
-  }
-});
+const addUsers = () => {
+  User.findOne().then((user) => {
+    if (!user) {
+      users.forEach((element) => {
+        const newUser = new User(element);
+        newUser.save();
+      });
+    }
+  });
+};
+
+export default addUsers;

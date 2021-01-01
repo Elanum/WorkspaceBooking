@@ -13,7 +13,7 @@ import {
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
-import * as actions from '../../actions';
+import * as actions from '../actions';
 
 const Input = ({ input, type, placeholder }) => (
   <FormControl
@@ -23,6 +23,7 @@ const Input = ({ input, type, placeholder }) => (
     onChange={input.onChange}
   />
 );
+
 class Login extends Component {
   onSubmit = (props) => {
     const { login, history } = this.props;

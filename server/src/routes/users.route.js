@@ -1,6 +1,7 @@
 import express from 'express';
 import passport from 'passport';
-import User from '../models/users.model';
+import Users from '../models/users.model';
+import Bookings from '../models/bookings.model';
 
 const router = express.Router();
 
@@ -9,14 +10,8 @@ router
   .get(
     passport.authenticate('jwt', { session: false, failWithError: true }),
     (_req, res) => {
-      User.find()
+      Users.find()
         .sort('userId')
-        .populate({
-          path: 'bookings',
-          options: {
-            sort: 'date',
-          },
-        })
         .then((users) => {
           if (users.length === 0) {
             return res.status(404).json({ message: 'No Users Found' });
@@ -36,24 +31,23 @@ router
   .get(
     passport.authenticate('jwt', { session: false, failWithError: true }),
     async (req, res) => {
-      User.findOne({ username: req.params.username })
-        .populate({
-          path: 'bookings',
-          options: {
-            sort: 'date',
-          },
-          populate: {
-            path: 'workspace',
-            populate: {
-              path: 'room',
-            },
-          },
-        })
-        .then((user) => {
+      const today = new Date();
+      Users.findOne({ username: req.params.username })
+        .then(async (user) => {
           if (!user) {
             return res.status(404).json({ message: 'User Not Found' });
           }
-          return res.status(200).json(user);
+          const result = user.toJSON();
+
+          result.bookings = await Bookings.find({
+            $and: [
+              { $or: [{ bookedAM: user }, { bookedPM: user }] },
+              { date: { $gte: new Date().setHours(0, 0, 0, 0) } },
+            ],
+          }).populate({ path: 'workspace', populate: { path: 'room' } });
+          delete result.bookingsAM;
+          delete result.bookingsPM;
+          return res.status(200).json(result);
         })
         .catch((error) => res.status(500).json({ message: error.message }));
     },

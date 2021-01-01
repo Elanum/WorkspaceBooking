@@ -2,7 +2,7 @@ import axios from 'axios';
 import { GET_ROOMS, ROOMS_ERROR } from './types';
 import { authHeader, API_URL } from '../config/api.config';
 
-const getAllRooms = () => async (dispatch) => {
+const getRooms = () => async (dispatch) => {
   axios
     .get(`${API_URL}/rooms`, authHeader())
     .then(({ data }) => {
@@ -15,4 +15,4 @@ const getAllRooms = () => async (dispatch) => {
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export { getAllRooms };
+export { getRooms };

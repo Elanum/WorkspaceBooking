@@ -6,8 +6,8 @@ import * as actions from '../actions';
 
 class Bookings extends Component {
   componentDidMount() {
-    const { getAllBookings } = this.props;
-    getAllBookings();
+    const { getBookings } = this.props;
+    getBookings();
   }
 
   render() {
@@ -21,21 +21,21 @@ class Bookings extends Component {
         <Table striped hover bordered responsive>
           <thead>
             <tr>
-              <th>#</th>
               <th>Room</th>
               <th>Workspace</th>
-              <th>User</th>
+              <th>Booked AM</th>
+              <th>Booked PM</th>
               <th>Date</th>
             </tr>
           </thead>
           <tbody>
             {bookings.map((booking) => (
               <tr key={booking._id}>
-                <td>{booking.bookingId}</td>
                 <td>{booking.workspace.room.name}</td>
                 <td>{booking.workspace.name}</td>
-                <td>{booking.user.username}</td>
-                <td>{new Date(booking.date).toLocaleString()}</td>
+                <td>{booking.bookedAM ? booking.bookedAM.username : '' }</td>
+                <td>{booking.bookedPM ? booking.bookedPM.username : '' }</td>
+                <td>{new Date(booking.date).toLocaleDateString()}</td>
               </tr>
             ))}
           </tbody>

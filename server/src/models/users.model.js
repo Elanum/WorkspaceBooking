@@ -44,10 +44,16 @@ UserSchema.plugin(validtor);
 
 UserSchema.plugin(AutoIncrement, { inc_field: 'userId' });
 
-UserSchema.virtual('bookings', {
+UserSchema.virtual('bookingsAM', {
   ref: 'Booking',
   localField: '_id',
-  foreignField: 'user',
+  foreignField: 'bookedAM',
+});
+
+UserSchema.virtual('bookingsPM', {
+  ref: 'Booking',
+  localField: '_id',
+  foreignField: 'bookedPM',
 });
 
 UserSchema.set('toJSON', { virtuals: true });

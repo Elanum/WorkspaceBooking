@@ -14,13 +14,13 @@ import './index.css';
 import reducers from './reducers';
 import PrivateRoute from './auth.route';
 import App from './components/app.component';
-import Login from './components/auth/login.component';
-import Logout from './components/auth/logout.component';
-import Profile from './components/profile.component';
-import Rooms from './components/rooms.component';
-import Workspaces from './components/workspaces.component';
-import Bookings from './components/bookings.component';
-import NotFound from './components/notfound.component';
+import Login from './views/login.view';
+import Logout from './components/logout.component';
+import Profile from './views/profile.view';
+import Rooms from './views/rooms.view';
+import Workspaces from './views/workspaces.view';
+import Bookings from './views/bookings.view';
+import NotFound from './views/notfound.view';
 
 const user = JSON.parse(localStorage.getItem('user'));
 
@@ -41,7 +41,11 @@ ReactDOM.render(
           <PrivateRoute exact path="/bookings" component={Bookings} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/logout" component={Logout} />
-          <Redirect exact from="/" to={`/profile/${user.username}`} />
+          <Redirect
+            exact
+            from="/"
+            to={user ? `/profile/${user.username}` : '/login'}
+          />
           <Route path="*" component={NotFound} />
         </Switch>
       </App>
