@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Button, Nav, Navbar } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,13 +15,7 @@ import * as actions from '../actions';
 
 class Navigation extends Component {
   render() {
-    const {
-      authenticated,
-      getUser,
-      getAllRooms,
-      getAllWorkspaces,
-      getAllBookings,
-    } = this.props;
+    const { authenticated } = this.props;
 
     const profile = authenticated && authenticated.username;
 
@@ -45,7 +39,6 @@ class Navigation extends Component {
                   exact
                   as={NavLink}
                   to={`/profile/${profile}`}
-                  onClick={() => getUser({ username: profile })}
                   eventKey="3"
                 >
                   <FontAwesomeIcon icon={faUserCircle} />
@@ -56,7 +49,6 @@ class Navigation extends Component {
                   exact
                   as={NavLink}
                   to="/rooms"
-                  onClick={() => getAllRooms()}
                   eventKey="0"
                 >
                   <FontAwesomeIcon icon={faDoorOpen} />
@@ -67,7 +59,6 @@ class Navigation extends Component {
                   exact
                   as={NavLink}
                   to="/workspaces"
-                  onClick={() => getAllWorkspaces()}
                   eventKey="1"
                 >
                   <FontAwesomeIcon icon={faDesktop} />
@@ -78,7 +69,6 @@ class Navigation extends Component {
                   exact
                   as={NavLink}
                   to="/bookings"
-                  onClick={() => getAllBookings()}
                   eventKey="2"
                 >
                   <FontAwesomeIcon icon={faCalendarCheck} />
@@ -88,7 +78,7 @@ class Navigation extends Component {
               </Nav>
               <Nav.Item className="ml-auto">
                 <Link to="/logout">
-                  <Button variant="outline-light">
+                  <Button variant="outline-light" size="sm">
                     <FontAwesomeIcon icon={faSignOutAlt} />
                     {' '}
                     Logout
@@ -107,4 +97,4 @@ function mapStateToProps(state) {
   return { authenticated: state.auth.authenticated };
 }
 
-export default connect(mapStateToProps, actions)(Navigation);
+export default withRouter(connect(mapStateToProps, actions)(Navigation));
