@@ -123,7 +123,7 @@ router
         }
         return res.status(200).json(booking);
       } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
       }
     },
     (error, _req, res, _next) => {
