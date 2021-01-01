@@ -35,7 +35,7 @@ app.use(passport.initialize());
 
 require('./config/passport.config')(passport);
 
-require('./defaults/init.defaults');
+require('./config/mongoose.init');
 
 app.use(apiPrefix, authRouter);
 app.use(apiPrefix, usersRouter);
