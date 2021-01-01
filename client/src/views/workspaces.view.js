@@ -9,8 +9,8 @@ import NewBooking from '../components/newbooking.component';
 
 class Workspaces extends Component {
   componentDidMount() {
-    const { getAllWorkspaces } = this.props;
-    getAllWorkspaces();
+    const { getWorkspaces } = this.props;
+    getWorkspaces();
   }
 
   render() {

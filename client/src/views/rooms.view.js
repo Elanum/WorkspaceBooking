@@ -8,8 +8,8 @@ import * as actions from '../actions';
 
 class Rooms extends Component {
   componentDidMount() {
-    const { getAllRooms } = this.props;
-    getAllRooms();
+    const { getRooms } = this.props;
+    getRooms();
   }
 
   render() {

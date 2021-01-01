@@ -2,7 +2,7 @@ import axios from 'axios';
 import { GET_BOOKINGS, POST_BOOKINGS, BOOKINGS_ERROR } from './types';
 import { authHeader, API_URL } from '../config/api.config';
 
-const getAllBookings = () => async (dispatch) => {
+const getBookings = () => async (dispatch) => {
   axios
     .get(`${API_URL}/bookings`, authHeader())
     .then(({ data }) => {
@@ -14,7 +14,7 @@ const getAllBookings = () => async (dispatch) => {
     });
 };
 
-const newBooking = (props, callback) => async (dispatch) => {
+const postBookings = (props, callback) => async (dispatch) => {
   axios
     .post(`${API_URL}/bookings`, props, authHeader())
     .then(({ data }) => {
@@ -27,4 +27,4 @@ const newBooking = (props, callback) => async (dispatch) => {
     });
 };
 
-export { getAllBookings, newBooking };
+export { getBookings, postBookings };

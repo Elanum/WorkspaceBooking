@@ -6,8 +6,8 @@ import * as actions from '../actions';
 
 class Bookings extends Component {
   componentDidMount() {
-    const { getAllBookings } = this.props;
-    getAllBookings();
+    const { getBookings } = this.props;
+    getBookings();
   }
 
   render() {

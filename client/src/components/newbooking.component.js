@@ -43,7 +43,7 @@ class NewBooking extends Component {
   }
 
   onSubmit = (props) => {
-    const { postBookings, workspace, getAllWorkspaces } = this.props;
+    const { postBookings, workspace, getWorkspaces } = this.props;
     const data = {
       workspace: workspace._id,
       date: new Date(props.date),
@@ -51,7 +51,7 @@ class NewBooking extends Component {
     if (props.pm) data.bookedPM = user._id;
     if (props.am) data.bookedAM = user._id;
     postBookings(data, () => {
-      getAllWorkspaces();
+      getWorkspaces();
       this.close();
     });
   };
