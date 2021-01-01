@@ -55,7 +55,7 @@ router
         if (booking.bookedAM && booking.bookedPM) {
           return res
             .status(423)
-            .json({ message: `Worksplace is already occupied on ${date}` });
+            .json({ message: `Worksplace is already occupied on ${new Date(date).toLocaleDateString()}` });
         }
         booking.bookedAM = bookedAM || booking.bookedAM;
         booking.bookedPM = bookedPM || booking.bookedPM;
