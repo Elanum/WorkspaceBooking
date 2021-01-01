@@ -9,8 +9,9 @@ function bookings(state = INITIAL_STATE, action) {
   switch (action.type) {
     case GET_BOOKINGS:
       return { ...state, bookings: action.payload };
-    case POST_BOOKINGS:
-      return { ...state, bookings: action.payload };
+    case POST_BOOKINGS: {
+      return { ...state, bookings: [action.payload] };
+    }
     case BOOKINGS_ERROR:
       return { ...state, errorMessage: action.payload };
     default:

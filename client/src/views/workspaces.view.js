@@ -24,7 +24,7 @@ class Workspaces extends Component {
         <h2>Workspaces</h2>
         <Row>
           {workspaces.map((workspace) => (
-            <Col key={workspace._id} md="6" className="mb-3">
+            <Col key={workspace._id} md="4" className="mb-3">
               <Card className="shadow">
                 <Card.Header>{workspace.room.name}</Card.Header>
                 <Card.Body>

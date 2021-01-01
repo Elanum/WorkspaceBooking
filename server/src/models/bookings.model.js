@@ -17,7 +17,7 @@ const BookingSchema = new mongoose.Schema({
   date: {
     type: Date,
     required: true,
-    min: new Date().toISOString().slice(0, 10),
+    min: new Date().setHours(0, 0, 0, 0),
   },
   bookedAM: {
     type: mongoose.Schema.ObjectId,

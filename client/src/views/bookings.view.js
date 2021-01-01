@@ -21,7 +21,6 @@ class Bookings extends Component {
         <Table striped hover bordered responsive>
           <thead>
             <tr>
-              <th>#</th>
               <th>Room</th>
               <th>Workspace</th>
               <th>Booked AM</th>
@@ -32,7 +31,6 @@ class Bookings extends Component {
           <tbody>
             {bookings.map((booking) => (
               <tr key={booking._id}>
-                <td>{booking.bookingId}</td>
                 <td>{booking.workspace.room.name}</td>
                 <td>{booking.workspace.name}</td>
                 <td>{booking.bookedAM ? booking.bookedAM.username : '' }</td>
