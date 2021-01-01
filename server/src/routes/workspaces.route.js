@@ -14,14 +14,13 @@ router
         .populate('room')
         .populate({
           path: 'bookings',
+          match: { date: { $gte: new Date().setHours(0, 0, 0, 0) } },
           populate: [
             {
               path: 'bookedAM',
-              match: { date: { $gte: new Date().setHours(0, 0, 0, 0) } },
             },
             {
               path: 'bookedPM',
-              match: { date: { $gte: new Date().setHours(0, 0, 0, 0) } },
             },
           ],
         })
