@@ -12,7 +12,7 @@ import workspacesRouter from './routes/workspaces.route';
 import bookingsRouter from './routes/bookings.route';
 
 const app = express();
-const port = process.env.SERVER_PORT || 5000;
+const port = process.env.PORT || process.env.SERVER_PORT || 5000;
 const dbPort = process.env.DB_PORT || 27017;
 const dbHost = process.env.DB_HOST || 'database';
 const dbName = process.env.DB_NAME || 'workspace-booking';
