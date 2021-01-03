@@ -3,6 +3,8 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import logger from 'morgan';
 import passport from 'passport';
+import path from 'path';
+
 import usersRouter from './routes/users.route';
 import authRouter from './routes/auth.route';
 import roomsRouter from './routes/rooms.route';
@@ -14,8 +16,13 @@ const port = process.env.SERVER_PORT || 5000;
 const dbPort = process.env.DB_PORT || 27017;
 const dbHost = process.env.DB_HOST || 'database';
 const dbName = process.env.DB_NAME || 'workspace-booking';
-const dbConnection = `mongodb://${dbHost}:${dbPort}/${dbName}`;
 const apiPrefix = '/api';
+
+let dbConnection = `mongodb://${dbHost}:${dbPort}/${dbName}`;
+
+if (process.env.NODE_ENV === 'production') {
+  dbConnection = process.env.DB_URI;
+}
 
 mongoose
   .connect(dbConnection, {
@@ -42,6 +49,14 @@ app.use(apiPrefix, usersRouter);
 app.use(apiPrefix, roomsRouter);
 app.use(apiPrefix, workspacesRouter);
 app.use(apiPrefix, bookingsRouter);
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../../client/build')));
+
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
+  });
+}
 
 app.use((_req, res) => {
   res.status(404).json({
