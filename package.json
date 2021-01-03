@@ -4,6 +4,9 @@
   "description": "workspace booking system for my bachelor thesis",
   "scripts": {
     "start": "cd server && yarn start",
+    "postinstall": "(cd server && yarn); (cd client && yarn);",
+    "get-next-version": "node ./get-next-version.js",
+    "release": "standard-version",
     "heroku-postbuild": "cd server && yarn && cd ../client && yarn && yarn build"
   },
   "repository": {
@@ -11,5 +14,8 @@
     "url": "git+https://github.com/Elanum/workspace-booking.git"
   },
   "author": "Manuel Schierenberg",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "standard-version": "^9.1.0"
+  }
 }
