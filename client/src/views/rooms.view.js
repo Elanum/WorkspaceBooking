@@ -32,7 +32,6 @@ class Rooms extends Component {
                     {' '}
                     {room.workspaces.length}
                   </Card.Text>
-                  <Card.Link>Details</Card.Link>
                 </Card.Body>
               </Card>
             </Col>
