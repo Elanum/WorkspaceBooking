@@ -5,6 +5,7 @@ import {
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Field, formValueSelector } from 'redux-form';
+import { BOOKINGS_ERROR } from '../actions/types';
 import * as actions from '../actions';
 
 const today = new Date().toISOString().slice(0, 10);
@@ -57,6 +58,8 @@ class NewBooking extends Component {
   };
 
   close = () => {
+    const { dispatch } = this.props;
+    dispatch({ type: BOOKINGS_ERROR, payload: '' });
     this.setState({ showModal: false });
   };
 
