@@ -42,18 +42,22 @@ const addRooms = () => {
   });
 };
 
-const addWorkspaces = async () => {
+const addWorkspaces = () => {
   const workspaces = [];
-  rooms.forEach((room) => {
-    for (let i = 1; i < 5; i += 1) {
-      workspaces.push({
-        room: room._id,
-        name: `Workspace ${room.name.split(' ').splice(-1)}-${i}`,
+  Workspaces.find().then(async (w) => {
+    if (!w) {
+      rooms.forEach((room) => {
+        for (let i = 1; i < 5; i += 1) {
+          workspaces.push({
+            room: room._id,
+            name: `Workspace ${room.name.split(' ').splice(-1)}-${i}`,
+          });
+        }
+      });
+      await Workspaces.create(workspaces, (error) => {
+        if (error) throw error.message;
       });
     }
-  });
-  await Workspaces.create(workspaces, (error) => {
-    if (error) throw error.message;
   });
 };
 
