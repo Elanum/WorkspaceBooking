@@ -10,7 +10,11 @@ const getBookings = () => async (dispatch) => {
       dispatch({ type: BOOKINGS_ERROR, payload: '' });
     })
     .catch(({ response }) => {
-      dispatch({ type: BOOKINGS_ERROR, payload: response.data.message });
+      if (response) {
+        dispatch({ type: BOOKINGS_ERROR, payload: response.data.message });
+      } else {
+        dispatch({ type: BOOKINGS_ERROR, payload: 'Network Error' });
+      }
     });
 };
 
@@ -23,7 +27,11 @@ const postBookings = (props, callback) => async (dispatch) => {
       callback();
     })
     .catch(({ response }) => {
-      dispatch({ type: BOOKINGS_ERROR, payload: response.data.message });
+      if (response) {
+        dispatch({ type: BOOKINGS_ERROR, payload: response.data.message });
+      } else {
+        dispatch({ type: BOOKINGS_ERROR, payload: 'Network Error' });
+      }
     });
 };
 

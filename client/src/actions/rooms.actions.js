@@ -10,7 +10,11 @@ const getRooms = () => async (dispatch) => {
       dispatch({ type: ROOMS_ERROR, payload: '' });
     })
     .catch(({ response }) => {
-      dispatch({ type: ROOMS_ERROR, payload: response.data.message });
+      if (response) {
+        dispatch({ type: ROOMS_ERROR, payload: response.data.message });
+      } else {
+        dispatch({ type: ROOMS_ERROR, payload: 'Network Error' });
+      }
     });
 };
 

@@ -10,7 +10,11 @@ const getUser = (props) => async (dispatch) => {
       dispatch({ type: USER_ERROR, payload: '' });
     })
     .catch(({ response }) => {
-      dispatch({ type: USER_ERROR, payload: response.data.message });
+      if (response) {
+        dispatch({ type: USER_ERROR, payload: response.data.message });
+      } else {
+        dispatch({ type: USER_ERROR, payload: 'Network Error' });
+      }
     });
 };
 

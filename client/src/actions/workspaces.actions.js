@@ -10,7 +10,11 @@ const getWorkspaces = () => async (dispatch) => {
       dispatch({ type: BOOKINGS_ERROR, payload: '' });
     })
     .catch(({ response }) => {
-      dispatch({ type: WORKSPACES_ERROR, payload: response.data.message });
+      if (response) {
+        dispatch({ type: WORKSPACES_ERROR, payload: response.data.message });
+      } else {
+        dispatch({ type: WORKSPACES_ERROR, payload: 'Network Error' });
+      }
     });
 };
 

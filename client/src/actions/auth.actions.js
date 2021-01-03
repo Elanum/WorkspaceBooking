@@ -12,7 +12,11 @@ const login = (props, callback) => async (dispatch) => {
       callback();
     })
     .catch(({ response }) => {
-      dispatch({ type: AUTH_ERROR, payload: response.data.message });
+      if (response) {
+        dispatch({ type: AUTH_ERROR, payload: response.data.message });
+      } else {
+        dispatch({ type: AUTH_ERROR, payload: 'Network Error' });
+      }
     });
 };
 
