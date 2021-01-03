@@ -60,9 +60,6 @@ class Profile extends Component {
                   {user.email}
                 </Card.Text>
               </Card.Body>
-              <Card.Footer>
-                <Card.Link>Edit</Card.Link>
-              </Card.Footer>
             </Card>
           </Col>
           <Col md="8">
