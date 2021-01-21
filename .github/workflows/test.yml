@@ -5,7 +5,7 @@ on:
 
 jobs:
   eslint:
-    name: Setup Client
+    name: ESLint
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -19,12 +19,12 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
 
-      - name: Change to directory ${{ matrix.directory }}
-        run: cd ${{ matrix.directory }}
-
-      - name: Install dependencies
+      - name: Install ${{ matrix.directory}} dependencies
         run: yarn
+        working-directory: ${{ matrix.directory }}
 
-      - name: ESLint
+      - name: Run Lint
         run: yarn lint
+        working-directory: ${{ matrix.directory }}
+
 
