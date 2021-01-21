@@ -1,0 +1,30 @@
+name: Test Project
+
+on:
+  pull_request:
+
+jobs:
+  eslint:
+    name: Setup Client
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory: ['client', 'server']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+
+      - name: Change to directory ${{ matrix.directory }}
+        run: cd ${{ matrix.directory }}
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: ESLint
+        run: yarn lint
+
