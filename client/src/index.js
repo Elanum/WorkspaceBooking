@@ -4,9 +4,11 @@ import ReactDOM from 'react-dom';
 import {
   BrowserRouter, Redirect, Route, Switch,
 } from 'react-router-dom';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import reduxThunk from 'redux-thunk';
+import * as Sentry from '@sentry/react';
+import { Integrations } from '@sentry/tracing';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -22,12 +24,18 @@ import Workspaces from './views/workspaces.view';
 import Bookings from './views/bookings.view';
 import NotFound from './views/notfound.view';
 
-const user = JSON.parse(localStorage.getItem('user'));
+Sentry.init({
+  dsn: process.env.SENTRY_CLIENT_DSN,
+  integrations: [new Integrations.BrowserTracing()],
+  tracesSampleRate: 1.0,
+});
 
+const user = JSON.parse(localStorage.getItem('user'));
+const sentryReduxEnhancer = Sentry.createReduxEnhancer();
 const store = createStore(
   reducers,
   { auth: { authenticated: user } },
-  applyMiddleware(reduxThunk),
+  compose(applyMiddleware(reduxThunk), sentryReduxEnhancer),
 );
 
 ReactDOM.render(
