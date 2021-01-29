@@ -2,7 +2,7 @@ name: Create Staging Environment
 
 on:
   pull_request:
-    branches: ['release/**']
+    branches: ['main']
 
 jobs:
   bump_version:
