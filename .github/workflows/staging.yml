@@ -6,7 +6,7 @@ on:
 
 jobs:
   bump_version:
-    if: ${{ contains(github.ref, 'refs/heads/release/') }}
+    # if: ${{ contains(github.ref, 'refs/heads/release/') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
