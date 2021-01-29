@@ -1,5 +1,6 @@
 import express from 'express';
 import passport from 'passport';
+import { captureException } from '@sentry/node';
 import Booking from '../models/bookings.model';
 
 const router = express.Router();
@@ -8,7 +9,7 @@ router
   .route('/bookings')
   .get(
     passport.authenticate('jwt', { session: false, failWithError: true }),
-    (_req, res) => {
+    (_req, res, next) => {
       Booking.find({ date: { $gte: new Date().setHours(0, 0, 0, 0) } })
         .sort('date')
         .populate('bookedAM')
@@ -25,15 +26,19 @@ router
           }
           return res.status(200).json(bookings);
         })
-        .catch((error) => res.status(500).json({ message: error.message }));
+        .catch((error) => {
+          captureException(error);
+          next(error);
+        });
     },
-    (error, _req, res, _next) => {
-      res.status(error.status || 500).json({ message: error.message });
+    (error, _req, _res, next) => {
+      captureException(error);
+      next(error);
     },
   )
   .post(
     passport.authenticate('jwt', { session: false, failWithError: true }),
-    async (req, res) => {
+    async (req, res, next) => {
       const {
         workspace, date, bookedAM, bookedPM,
       } = req.body;
@@ -71,11 +76,13 @@ router
             .execPopulate());
         return res.status(200).json(booking);
       } catch (error) {
-        return res.status(500).json({ message: error.message });
+        captureException(error);
+        return next(error);
       }
     },
-    (error, _req, res, _next) => {
-      res.status(error.status || 500).json({ message: error.message });
+    (error, _req, _res, next) => {
+      captureException(error);
+      next(error);
     },
   )
   .all((_req, res) => res.status(405).json({ message: 'Method Not Allowed' }));
@@ -84,7 +91,7 @@ router
   .route('/bookings/:id')
   .get(
     passport.authenticate('jwt', { session: false, failWithError: true }),
-    (req, res) => {
+    (req, res, next) => {
       const { id } = req.params;
       Booking.findById(id)
         .populate('bookedAM')
@@ -95,13 +102,23 @@ router
             path: 'room',
           },
         })
-        .then((booking) => res.status(200).json(booking))
-        .catch((error) => res.status(500).json({ message: error.message }));
+        .then((booking) => {
+          if (!booking) res.status(404).json({ message: `Booking ${id} Not Found` });
+          res.status(200).json(booking);
+        })
+        .catch((error) => {
+          captureException(error);
+          next(error);
+        });
+    },
+    (error, _req, _res, next) => {
+      captureException(error);
+      next(error);
     },
   )
   .delete(
     passport.authenticate('jwt', { session: false, failWithError: true }),
-    async (req, res) => {
+    async (req, res, next) => {
       const { bookedAM, bookedPM } = req.body;
       const { id } = req.params;
 
@@ -123,13 +140,15 @@ router
         }
         return res.status(200).json(booking);
       } catch (error) {
-        return res.status(500).json({ message: error.message });
+        captureException(error);
+        return next(error);
       }
     },
-    (error, _req, res, _next) => {
-      res.status(error.status || 500).json({ message: error.message });
+    (error, _req, _res, next) => {
+      captureException(error);
+      next(error);
     },
   )
   .all((_req, res) => res.status(405).json({ message: 'Method Not Allowed' }));
 
-module.exports = router;
+export default router;

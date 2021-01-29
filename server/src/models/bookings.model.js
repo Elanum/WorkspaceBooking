@@ -54,4 +54,4 @@ BookingSchema.pre('save', function setState(next) {
   }
 });
 
-module.exports = mongoose.model('Booking', BookingSchema);
+export default mongoose.model('Booking', BookingSchema);

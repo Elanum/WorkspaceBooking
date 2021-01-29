@@ -1,5 +1,6 @@
 import express from 'express';
 import passport from 'passport';
+import { captureException } from '@sentry/node';
 import Users from '../models/users.model';
 import Bookings from '../models/bookings.model';
 
@@ -9,7 +10,7 @@ router
   .route('/users')
   .get(
     passport.authenticate('jwt', { session: false, failWithError: true }),
-    (_req, res) => {
+    (_req, res, next) => {
       Users.find()
         .sort('userId')
         .then((users) => {
@@ -18,10 +19,14 @@ router
           }
           return res.status(200).json(users);
         })
-        .catch((error) => res.status(500).json({ message: error.message }));
+        .catch((error) => {
+          captureException(error);
+          next(error);
+        });
     },
-    (error, _req, res, _next) => {
-      res.status(error.status || 500).json({ message: error.message });
+    (error, _req, _res, next) => {
+      captureException(error);
+      next(error);
     },
   )
   .all((_req, res) => res.status(405).json({ message: 'Method Not Allowed' }));
@@ -30,8 +35,7 @@ router
   .route('/users/:username')
   .get(
     passport.authenticate('jwt', { session: false, failWithError: true }),
-    async (req, res) => {
-      const today = new Date();
+    async (req, res, next) => {
       Users.findOne({ username: req.params.username })
         .then(async (user) => {
           if (!user) {
@@ -49,12 +53,16 @@ router
           delete result.bookingsPM;
           return res.status(200).json(result);
         })
-        .catch((error) => res.status(500).json({ message: error.message }));
+        .catch((error) => {
+          captureException(error);
+          next(error);
+        });
     },
-    (error, _req, res, _next) => {
-      res.status(error.status || 500).json({ message: error.message });
+    (error, _req, _res, next) => {
+      captureException(error);
+      next(error);
     },
   )
   .all((_req, res) => res.status(405).json({ message: 'Method Not Allowed' }));
 
-module.exports = router;
+export default router;

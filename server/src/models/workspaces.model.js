@@ -33,4 +33,4 @@ WorkspaceSchema.set('toJSON', { virtuals: true });
 
 WorkspaceSchema.set('id', false);
 
-module.exports = mongoose.model('Workspace', WorkspaceSchema);
+export default mongoose.model('Workspace', WorkspaceSchema);
