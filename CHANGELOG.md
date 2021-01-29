@@ -1,3 +1,10 @@
+## [0.2.1](https://github.com/Elanum/workspace-booking/compare/v0.2.0...v0.2.1) (2021-01-29)
+
+
+### Bug Fixes
+
+* fix update_develop workflow ([68cb7e9](https://github.com/Elanum/workspace-booking/commit/68cb7e99c9e1a69ef6199f131b0afae8df7df4d9))
+
 # [0.2.0](https://github.com/Elanum/workspace-booking/compare/v0.1.0...v0.2.0) (2021-01-29)
 
 
