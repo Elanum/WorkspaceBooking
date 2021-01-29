@@ -1,3 +1,26 @@
+# [0.2.0](https://github.com/Elanum/workspace-booking/compare/v0.1.0...v0.2.0) (2021-01-29)
+
+
+### Bug Fixes
+
+* add working directories to workflow ([3931b93](https://github.com/Elanum/workspace-booking/commit/3931b934d3be8785cf38d86374756fc52cb8f080))
+* change server port to heroku config vars ([fa318c0](https://github.com/Elanum/workspace-booking/commit/fa318c071f6e22e40d6728d7c3d993301538d4f7))
+* fix no-unused-vars error ([a28a6a6](https://github.com/Elanum/workspace-booking/commit/a28a6a6e668cf18e098f4c63da2047336ed3a9e0))
+* fix proxy function due to update ([dbf687d](https://github.com/Elanum/workspace-booking/commit/dbf687d5fa90b61f778520a9c200b4aaa43eeb22))
+* fix workspace initialization ([1b3b0c1](https://github.com/Elanum/workspace-booking/commit/1b3b0c1227672e9fa1d21f7037d6a47cdffa3f6e))
+
+
+### Features
+
+* add eslint workflow ([e4345cb](https://github.com/Elanum/workspace-booking/commit/e4345cb7853895980ea2e1e5ee41b60354e3ea89))
+* error handling with sentry ([b971b45](https://github.com/Elanum/workspace-booking/commit/b971b453f411bb2fdb454bc925f099e6b6fdb764)), closes [#13](https://github.com/Elanum/workspace-booking/issues/13)
+* initial sentry setup ([5b68f97](https://github.com/Elanum/workspace-booking/commit/5b68f975c917c85817b2d99d4899180d9eebb30b))
+
+
+### Reverts
+
+* re-add changelog ([bed17c2](https://github.com/Elanum/workspace-booking/commit/bed17c286c9acd95e2f9f264e49ead09a80c5f06))
+
 ## 0.1.0 (2021-01-03)
 
 
