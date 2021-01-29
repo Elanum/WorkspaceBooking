@@ -66,7 +66,7 @@ class Login extends Component {
                 </Form.Group>
               )}
               <Form.Group>
-                <Button type="submit" block>
+                <Button type="submit" block variant="danger">
                   Login
                 </Button>
               </Form.Group>
