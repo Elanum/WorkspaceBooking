@@ -21,7 +21,7 @@ jobs:
       - name: Changelog
         env:
           GITHUB_TOKEN: ${{ secrets.GPR_AUTH_TOKEN }}
-        run: npx semantic-release --plugins ['@semantic-release/commit-analyzer', '@semantic-release/npm', "@semantic-release/changelog"]
+        run: npx semantic-release -p ["@semantic-release/commit-analyzer", "@semantic-release/npm", "@semantic-release/changelog"]
 
       - name: Show Changes
         run: |
