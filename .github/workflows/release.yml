@@ -5,9 +5,31 @@ on:
     branches: ['main']
 
 jobs:
-  bump_version:
-    name: Bump version
+  eslint:
+    name: ESLint
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory: ['client', 'server']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+
+      - name: Install ${{ matrix.directory}} dependencies
+        run: yarn
+        working-directory: ${{ matrix.directory }}
+
+      - name: Run Lint
+        run: yarn lint
+        working-directory: ${{ matrix.directory }}
+
+  bump_version:
+    name: Bump Version
+    runs-on: ubuntu-latest
+    needs: eslint
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -18,11 +40,11 @@ jobs:
         uses: actions/setup-node@v2
 
       - name: Install dependencies
-        run: yarn
+        run: yarn --ignore-scripts
 
       - name: Publish release
         env:
-          GITHUB_TOKEN: ${{ secrets.GPR_AUTH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
 
   update_develop:
@@ -43,4 +65,25 @@ jobs:
       - name: Push develop Branch
         run: git push
 
+  deploy_production_env:
+    name: Deploy Production Environment
+    runs-on: ubuntu-latest
+    needs: update_develop
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Deploy Staging Environment
+        uses: akhileshns/heroku-deploy@v3.8.9
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+          heroku_email: ${{ secrets.HEROKU_APP_NAME}}
+        env:
+          HD_ADMIN_MAIL: ${{ secrets.ADMIN_MAIL }}
+          HD_ADMIN_PWD: ${{ secrets.ADMIN_PWD }}
+          HD_ADMIN_USER: ${{ secrets.ADMIN_USER }}
+          HD_DB_URI: ${{ secrets.DB_URI }}
+          HD_SECRET: ${{ secrets.SECRET}}
+          HD_SERVER_PORT: ${{ secrets.SERVER_PORT }}
    
