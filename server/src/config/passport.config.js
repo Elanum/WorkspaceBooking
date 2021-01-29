@@ -1,10 +1,11 @@
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import User from '../models/users.model';
 
-const secret = process.env.SECRET || 'jwtsecret';
+const { JWT_SECRET = 'jwtsecret' } = process.env;
+
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: secret,
+  secretOrKey: JWT_SECRET,
 };
 
 const authorize = (passport) => {

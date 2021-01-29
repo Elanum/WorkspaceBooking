@@ -1,0 +1,27 @@
+name: Test Project
+
+on:
+  push:
+    branches-ignore: ['main']
+
+jobs:
+  eslint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory: ['client', 'server']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+
+      - name: Install ${{ matrix.directory}} dependencies
+        run: yarn
+        working-directory: ${{ matrix.directory }}
+
+      - name: Run Lint
+        run: yarn lint
+        working-directory: ${{ matrix.directory }}

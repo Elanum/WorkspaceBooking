@@ -1,5 +1,6 @@
 import express from 'express';
 import passport from 'passport';
+import { captureException } from '@sentry/node';
 import Workspace from '../models/workspaces.model';
 
 const router = express.Router();
@@ -8,7 +9,7 @@ router
   .route('/workspaces')
   .get(
     passport.authenticate('jwt', { session: false, failWithError: true }),
-    (_req, res) => {
+    (_req, res, next) => {
       Workspace.find()
         .sort('workspaceId')
         .populate('room')
@@ -30,23 +31,31 @@ router
           }
           return res.status(200).json(workspaces);
         })
-        .catch((error) => res.status(500).json({ message: error.message }));
+        .catch((error) => {
+          captureException(error);
+          next(error);
+        });
     },
-    (error, _req, res, _next) => {
-      res.status(error.status || 500).json({ message: error.message });
+    (error, _req, _res, next) => {
+      captureException(error);
+      next(error);
     },
   )
   .post(
     passport.authenticate('jwt', { session: false, failWithError: true }),
-    (req, res) => {
+    (req, res, next) => {
       const workspace = new Workspace({ ...req.body });
       workspace
         .save()
         .then((newWorkspace) => res.status(201).json(newWorkspace))
-        .catch((error) => res.status(500).json({ message: error.message }));
+        .catch((error) => {
+          captureException(error);
+          next(error);
+        });
     },
-    (error, _req, res, _next) => {
-      res.status(error.status || 500).json({ message: error.message });
+    (error, _req, _res, next) => {
+      captureException(error);
+      next(error);
     },
   )
   .all((_req, res) => res.status(405).json({ message: 'Method Not Allowed' }));
@@ -55,7 +64,7 @@ router
   .route('/workspaces/:id')
   .get(
     passport.authenticate('jwt', { session: false, failWithError: true }),
-    (req, res) => {
+    (req, res, next) => {
       Workspace.findOne({ workspaceId: req.params.id })
         .sort('workspaceId')
         .populate('room')
@@ -69,14 +78,19 @@ router
           },
         })
         .then((workspace) => {
-          res.status(200).json(workspace);
+          if (!workspace) return res.status(404).json({ message: `Workspace ${req.params.id} Not Found` });
+          return res.status(200).json(workspace);
         })
-        .catch((error) => res.status(500).json({ message: error.message }));
+        .catch((error) => {
+          captureException(error);
+          next(error);
+        });
     },
-    (error, _req, res, _next) => {
-      res.status(error.status || 500).json({ message: error.message });
+    (error, _req, _res, next) => {
+      captureException(error);
+      next(error);
     },
   )
   .all((_req, res) => res.status(405).json({ message: 'Method Not Allowed' }));
 
-module.exports = router;
+export default router;

@@ -2,11 +2,11 @@
   "name": "workspace-booking",
   "version": "0.1.0",
   "description": "workspace booking system for my bachelor thesis",
+  "private": true,
   "scripts": {
     "start": "cd server && yarn start",
     "postinstall": "(cd server && yarn); (cd client && yarn);",
-    "get-next-version": "node ./get-next-version.js",
-    "release": "standard-version",
+    "release": "npx semantic-release --dry-run --no-ci --plugins \"@semantic-release/commit-analyzer\" | grep -oP \"Published release \\K.*? \"",
     "heroku-postbuild": "cd server && yarn && cd ../client && yarn && yarn build"
   },
   "repository": {
@@ -15,7 +15,41 @@
   },
   "author": "Manuel Schierenberg",
   "license": "MIT",
-  "dependencies": {
-    "standard-version": "^9.1.0"
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "husky": "^4.3.8",
+    "semantic-release": "17.3.7"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "release": {
+    "branches": [
+      "main",
+      "develop"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      [
+        "@semantic-release/git",
+        {
+          "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
+        }
+      ],
+      "@semantic-release/github"
+    ]
   }
 }

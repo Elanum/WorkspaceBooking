@@ -28,4 +28,4 @@ RoomSchema.set('toJSON', { virtuals: true });
 
 RoomSchema.set('id', false);
 
-module.exports = mongoose.model('Room', RoomSchema);
+export default mongoose.model('Room', RoomSchema);
