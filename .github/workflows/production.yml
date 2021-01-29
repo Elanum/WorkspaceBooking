@@ -1,4 +1,4 @@
-name: Create Release
+name: Create Production Environment
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-node@v2
 
       - name: Install dependencies
-        run: yarn
+        run: yarn --ignore-scripts
 
       - name: Publish release
         env:
