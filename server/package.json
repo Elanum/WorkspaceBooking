@@ -36,9 +36,8 @@
       "airbnb-base"
     ],
     "rules": {
-      "no-underscore-dangle": "off",
       "no-param-reassign": "off",
-      "no-unused-vars": "off",
+      "no-underscore-dangle": "off",
       "no-console": "off"
     }
   },

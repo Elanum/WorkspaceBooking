@@ -1,4 +1,5 @@
-const API_URL = process.env.NODE_ENV === 'production' ? '/api' : `http://localhost:${process.env.SERVER_PORT || 5000}/api`;
+const { NODE_ENV } = process.env;
+const API_URL = NODE_ENV === 'production' ? '/api' : 'http://localhost:5000/api';
 
 const authHeader = () => {
   const user = JSON.parse(localStorage.getItem('user'));

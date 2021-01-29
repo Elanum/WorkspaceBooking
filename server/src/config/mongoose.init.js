@@ -3,11 +3,17 @@ import Users from '../models/users.model';
 import Rooms from '../models/rooms.model';
 import Workspaces from '../models/workspaces.model';
 
+const {
+  ADMIN_USER = 'admin',
+  ADMIN_PWD = 'rootpwd',
+  ADMIN_MAIL = 'admin@workspace-booking.de',
+} = process.env;
+
 const users = [
   {
-    username: process.env.ADMIN_USER || 'admin',
-    password: process.env.ADMIN_PWD || 'rootpwd',
-    email: process.env.ADMIN_MAIL || 'admin@workspace-booking.de',
+    username: ADMIN_USER,
+    password: ADMIN_PWD,
+    email: ADMIN_MAIL,
   },
 ];
 
