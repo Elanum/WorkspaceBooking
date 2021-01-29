@@ -20,15 +20,18 @@ jobs:
 
       - name: Changelog
         env:
-          GITHUB_TOKEN: ${{ secrets.GPR_AUTH_TOKEN }}
-        run: npx semantic-release -p "@semantic-release/commit-analyzer" -p "@semantic-release/npm" -p "@semantic-release/changelog"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
+        run: npx semantic-release
 
       - name: Show Changes
         run: |
           cat package.json
           cat CHANGELOG.md
 
-      
-        
-
-      
+      - name: Add Comment to Pull Request
+        uses: unsplash/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: "For the Staging Environment visit http://dev-${{ secrets.HEROKU_APP_NAME }}.herokuapp.com/"
+          check_for_duplicate_msg: true
