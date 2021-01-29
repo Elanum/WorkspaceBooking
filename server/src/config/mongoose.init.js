@@ -45,7 +45,7 @@ const addRooms = () => {
 const addWorkspaces = () => {
   const workspaces = [];
   Workspaces.find().then(async (w) => {
-    if (!w) {
+    if (w.length < 1) {
       rooms.forEach((room) => {
         for (let i = 1; i < 5; i += 1) {
           workspaces.push({
