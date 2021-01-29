@@ -39,13 +39,13 @@ jobs:
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: dev-${{ secrets.HEROKU_APP_NAME }}
-          heroku_email: ${{ secrets.HEROKU_APP_NAME}}
+          heroku_email: ${{ secrets.HEROKU_MAIL}}
         env:
           HD_ADMIN_MAIL: ${{ secrets.ADMIN_MAIL }}
           HD_ADMIN_PWD: ${{ secrets.ADMIN_PWD }}
           HD_ADMIN_USER: ${{ secrets.ADMIN_USER }}
           HD_DB_URI: ${{ secrets.DB_URI }}
-          HD_SECRET: ${{ secrets.SECRET}}
+          HD_JWT_SECRET: ${{ secrets.JWT_SECRET}}
           HD_SERVER_PORT: ${{ secrets.SERVER_PORT }}
 
   create_comment:
