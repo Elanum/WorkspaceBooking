@@ -80,4 +80,4 @@ app.use((err, _req, res, _next) => {
 
 app.listen(port, () => console.log(`server started and listening on port ${port}!`));
 
-module.exports = app;
+export default app;
