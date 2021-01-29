@@ -24,8 +24,10 @@ import Workspaces from './views/workspaces.view';
 import Bookings from './views/bookings.view';
 import NotFound from './views/notfound.view';
 
+const { SENTRY_CLIENT_DSN } = process.env;
+
 Sentry.init({
-  dsn: process.env.SENTRY_CLIENT_DSN,
+  dsn: SENTRY_CLIENT_DSN,
   integrations: [new Integrations.BrowserTracing()],
   tracesSampleRate: 1.0,
 });

@@ -1,11 +1,11 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { captureEvent, captureException } from '@sentry/node';
+import { captureException } from '@sentry/node';
 import Users from '../models/users.model';
 
+const { JWT_SECRET = 'jwtsecret' } = process.env;
 const router = express.Router();
-const secret = process.env.SECRET || 'jwtsecret';
 const expiresIn = 86400;
 
 router
@@ -28,7 +28,7 @@ router
     }
 
     try {
-      const token = jwt.sign({ id: user._id, username: user.password }, secret, {
+      const token = jwt.sign({ id: user._id, username: user.password }, JWT_SECRET, {
         expiresIn,
       });
 
