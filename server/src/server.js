@@ -29,6 +29,7 @@ Sentry.init({
     new Sentry.Integrations.Http({ tracing: true }),
     new Tracing.Integrations.Express({ app }),
   ],
+  environment: NODE_ENV || 'development',
   tracesSampleRate: 1.0,
 });
 
