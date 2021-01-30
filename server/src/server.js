@@ -1,4 +1,5 @@
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import logger from 'morgan';
@@ -16,12 +17,18 @@ import bookingsRouter from './routes/bookings.route';
 const {
   DB_URI, NODE_ENV, PORT = 5000, SENTRY_SERVER_DSN,
 } = process.env;
-
 const app = express();
 const apiPrefix = '/api';
 const dbConnection = NODE_ENV === 'production' || NODE_ENV === 'staging'
   ? DB_URI
   : 'mongodb://database:27017/';
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 5,
+  message: {
+    message: 'Too many requests, please try again later.',
+  },
+});
 
 Sentry.init({
   dsn: SENTRY_SERVER_DSN,
@@ -51,6 +58,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(passport.initialize());
+app.use(limiter);
 
 require('./config/passport.config')(passport);
 
