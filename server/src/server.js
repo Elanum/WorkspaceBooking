@@ -24,7 +24,8 @@ const dbConnection = NODE_ENV === 'production' || NODE_ENV === 'staging'
   : 'mongodb://database:27017/';
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: 5,
+  max: 10,
+  skipSuccessfulRequests: true,
   message: {
     message: 'Too many requests, please try again later.',
   },
