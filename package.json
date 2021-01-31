@@ -4,10 +4,10 @@
   "description": "workspace booking system for my bachelor thesis",
   "private": true,
   "scripts": {
-    "start": "cd server && yarn start",
-    "postinstall": "(cd server && yarn); (cd client && yarn);",
+    "start": "cd server && npm run start",
+    "postinstall": "(cd server && npm install); (cd client && npm install);",
     "release": "npx semantic-release --dry-run --no-ci --plugins \"@semantic-release/commit-analyzer\" | grep -oP \"Published release \\K.*? \"",
-    "heroku-postbuild": "cd server && yarn && cd ../client && yarn && yarn build"
+    "heroku-postbuild": "cd client/ && npm run build"
   },
   "repository": {
     "type": "git",

@@ -2,6 +2,6 @@ FROM node:15-alpine
 
 WORKDIR /usr/app/client
 COPY . .
-RUN yarn
+RUN npm install
 EXPOSE 3000
-CMD ["yarn", "start"]
+CMD ["npm", "run", "start"]
