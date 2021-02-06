@@ -11,20 +11,30 @@ const {
   ADMIN_MAIL = 'admin@workspace-booking.de',
 } = process.env;
 
-const users = [
-  { username: ADMIN_USER, password: ADMIN_PWD, email: ADMIN_MAIL },
-];
-
-const rooms = [
-  { _id: mongoose.mongo.ObjectID(), name: 'Room A' },
-  { _id: mongoose.mongo.ObjectID(), name: 'Room B' },
-];
-
 const dbConnection = NODE_ENV === 'production' || NODE_ENV === 'staging'
   ? DB_URI
   : 'mongodb://localhost:27017/';
 
 const dbName = NODE_ENV === 'production' ? 'workspace-booking' : 'workspace-booking-dev';
+
+const users = [
+  {
+    username: ADMIN_USER,
+    password: ADMIN_PWD,
+    email: ADMIN_MAIL,
+  },
+];
+
+const rooms = [
+  {
+    _id: mongoose.mongo.ObjectID(),
+    name: 'Room A',
+  },
+  {
+    _id: mongoose.mongo.ObjectID(),
+    name: 'Room B',
+  },
+];
 
 const connect = async () => {
   if (mongoose.connection.readyState === 0) {
@@ -90,7 +100,6 @@ const initData = () => {
 };
 
 export default {
-  mongoose,
   connect,
   disconnect,
   initData,

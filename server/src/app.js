@@ -17,14 +17,6 @@ import bookingsRouter from './routes/bookings.route';
 const { NODE_ENV, SENTRY_SERVER_DSN } = process.env;
 const app = express();
 const apiPrefix = '/api';
-const limiter = rateLimit({
-  windowMs: 1 * 60 * 1000,
-  max: 10,
-  skipSuccessfulRequests: true,
-  message: {
-    message: 'Too many requests, please try again later.',
-  },
-});
 
 Sentry.init({
   dsn: SENTRY_SERVER_DSN,
@@ -36,12 +28,20 @@ Sentry.init({
   tracesSampleRate: 1.0,
 });
 
-mongoDB.connect();
 if (NODE_ENV !== 'testing') {
-  app.use(logger('dev'));
+  mongoDB.connect();
   mongoDB.initData();
+  const limiter = rateLimit({
+    windowMs: 1 * 60 * 1000,
+    max: 10,
+    skipSuccessfulRequests: true,
+    message: {
+      message: 'Too many requests, please try again later.',
+    },
+  });
+  app.use(limiter);
+  app.use(logger('dev'));
 }
-// mongoDB.initData();
 
 app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
@@ -49,7 +49,6 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(passport.initialize());
-app.use(limiter);
 
 require('./config/passport.config')(passport);
 
@@ -68,11 +67,12 @@ if (NODE_ENV === 'production' || NODE_ENV === 'staging') {
 }
 if (NODE_ENV !== 'testing') {
   app.use(Sentry.Handlers.errorHandler());
-
-  app.use((err, _req, res) => {
-    res.statusCode = err.status || 500;
-    res.json({ message: err.message || res.sentry });
-  });
 }
+
+app.use((err, _req, res, next) => {
+  res.statusCode = err.status || 500;
+  res.json({ message: err.message || res.sentry });
+  next();
+});
 
 export default app;

@@ -71,7 +71,7 @@ router
             .populate('bookedAM')
             .populate('bookedPM')
             .execPopulate());
-        return res.status(200).json(booking);
+        return res.status(201).json(booking);
       } catch (error) {
         captureException(error);
         return next(error);
