@@ -47,13 +47,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        directory: ['server'] # 'client', 
+        directory: ['client', 'server']
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Start MongoDB
+      - if: matrix.directory == 'server'
+        name: Start MongoDB
         uses: DigiPie/mongo-action@v1.0.1
       
       - name: Install ${{ matrix.directory}} dependencies
