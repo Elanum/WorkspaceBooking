@@ -43,14 +43,11 @@ router
         workspace, date, bookedAM, bookedPM,
       } = req.body;
       const update = {};
+      if (!workspace) return res.status(400).json({ message: 'Workspace is required' });
       if (bookedAM) update.bookedAM = bookedAM;
       if (bookedPM) update.bookedPM = bookedPM;
 
-      if (!bookedAM && !bookedPM) {
-        return res
-          .status(400)
-          .json({ message: 'Booking Time (AM / PM) required' });
-      }
+      if (!bookedAM && !bookedPM) return res.status(400).json({ message: 'Booking Time (AM / PM) required' });
 
       let booking = await Booking.findOne({ workspace, date });
 
@@ -74,7 +71,7 @@ router
             .populate('bookedAM')
             .populate('bookedPM')
             .execPopulate());
-        return res.status(200).json(booking);
+        return res.status(201).json(booking);
       } catch (error) {
         captureException(error);
         return next(error);

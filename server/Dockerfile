@@ -1,7 +1,7 @@
-FROM node:15-alpine
+FROM node:14-alpine
 
 WORKDIR /usr/app/server
 COPY . .
-RUN yarn
+RUN npm install
 EXPOSE 5000
-CMD ["yarn", "dev"]
+CMD ["npm", "run", "dev"]

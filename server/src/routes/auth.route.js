@@ -12,13 +12,13 @@ router
   .route('/login')
   .post(async (req, res, next) => {
     const { username, password } = req.body;
-    const user = await Users.findOne({ username }).select('+password');
     if (!username) {
       return res.status(400).json({ message: 'Please enter a username' });
     }
     if (!password) {
       return res.status(400).json({ message: 'Please enter a password' });
     }
+    const user = await Users.findOne({ username }).select('+password');
     if (!user) return res.status(404).json({ message: 'Invalid Credentials' });
 
     const correctPassword = await bcrypt.compare(password, user.password);

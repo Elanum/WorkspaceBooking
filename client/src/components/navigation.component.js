@@ -7,7 +7,6 @@ import {
   faSignOutAlt,
   faUserCircle,
   faBriefcase,
-  faDoorOpen,
   faDesktop,
   faCalendarCheck,
 } from '@fortawesome/free-solid-svg-icons';
@@ -44,16 +43,6 @@ class Navigation extends Component {
                   <FontAwesomeIcon icon={faUserCircle} />
                   {' '}
                   {profile}
-                </Nav.Link>
-                <Nav.Link
-                  exact
-                  as={NavLink}
-                  to="/rooms"
-                  eventKey="0"
-                >
-                  <FontAwesomeIcon icon={faDoorOpen} />
-                  {' '}
-                  Rooms
                 </Nav.Link>
                 <Nav.Link
                   exact

@@ -19,9 +19,47 @@ jobs:
         uses: actions/setup-node@v2
 
       - name: Install ${{ matrix.directory}} dependencies
-        run: yarn
+        run: npm ci
         working-directory: ${{ matrix.directory }}
 
       - name: Run Lint
-        run: yarn lint
+        run: npm run lint
+        working-directory: ${{ matrix.directory }}
+
+  codeql:
+    name: Analyze Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: 'javascript'
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
+  
+  jest:
+    name: Jest
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory: ['client', 'server']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - if: matrix.directory == 'server'
+        name: Start MongoDB
+        uses: DigiPie/mongo-action@v1.0.1
+      
+      - name: Install ${{ matrix.directory}} dependencies
+        run: npm ci
+        working-directory: ${{ matrix.directory }}
+
+      - name: Run Tests
+        run: npm test
         working-directory: ${{ matrix.directory }}
