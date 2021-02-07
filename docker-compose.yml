@@ -3,10 +3,11 @@ version: '3'
 services:
   database:
     container_name: database
-    image: mongo
+    image: mongo:latest
     ports:
       - 27017:27017
     command: mongod --quiet --logpath /dev/null
+    
 
   server:
     container_name: server
@@ -17,6 +18,7 @@ services:
       - .env
     ports:
       - 5000:5000
+    network_mode: host
 
   client:
     container_name: client
