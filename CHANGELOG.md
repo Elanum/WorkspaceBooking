@@ -1,3 +1,21 @@
+# [0.3.0](https://github.com/Elanum/workspace-booking/compare/v0.2.1...v0.3.0) (2021-02-07)
+
+
+### Bug Fixes
+
+* fix undefined user id on new bookings ([13df46c](https://github.com/Elanum/workspace-booking/commit/13df46c06fcfd234a5754ee8dd0346d4b63c97b4))
+
+
+### Features
+
+* add rate-limiting to routes ([ac778a1](https://github.com/Elanum/workspace-booking/commit/ac778a1d18b70a9fa93d7992804ece120494510d))
+* remove room views ([2c91365](https://github.com/Elanum/workspace-booking/commit/2c91365ffc65dfb7566262b5e8174fb03af1703a))
+
+
+### Performance Improvements
+
+* increased rate limit ([277dd58](https://github.com/Elanum/workspace-booking/commit/277dd5823e53f5daacf06d60ecba2691cbadf634))
+
 ## [0.2.1](https://github.com/Elanum/workspace-booking/compare/v0.2.0...v0.2.1) (2021-01-29)
 
 
