@@ -31,8 +31,6 @@ const Switch = ({ input, id, disabled }) => (
   />
 );
 
-const user = JSON.parse(localStorage.getItem('user'));
-
 class NewBooking extends Component {
   constructor(props) {
     super(props);
@@ -44,7 +42,9 @@ class NewBooking extends Component {
   }
 
   onSubmit = (props) => {
-    const { postBookings, workspace, getWorkspaces } = this.props;
+    const {
+      postBookings, workspace, getWorkspaces, user,
+    } = this.props;
     const data = {
       workspace: workspace._id,
       date: new Date(props.date),
@@ -135,7 +135,11 @@ class NewBooking extends Component {
 function mapStateToProps(state) {
   const selector = formValueSelector('newBooking');
   const formDate = selector(state, 'date');
-  return { errorMessage: state.bookings.errorMessage, formDate };
+  return {
+    errorMessage: state.bookings.errorMessage,
+    formDate,
+    user: state.auth.authenticated,
+  };
 }
 
 const form = {
