@@ -19,7 +19,6 @@ import App from './components/app.component';
 import Login from './views/login.view';
 import Logout from './components/logout.component';
 import Profile from './views/profile.view';
-import Rooms from './views/rooms.view';
 import Workspaces from './views/workspaces.view';
 import Bookings from './views/bookings.view';
 import NotFound from './views/notfound.view';
@@ -46,7 +45,6 @@ ReactDOM.render(
       <App>
         <Switch>
           <PrivateRoute exact path="/profile/:username" component={Profile} />
-          <PrivateRoute exact path="/rooms" component={Rooms} />
           <PrivateRoute exact path="/workspaces" component={Workspaces} />
           <PrivateRoute exact path="/bookings" component={Bookings} />
           <Route exact path="/login" component={Login} />
