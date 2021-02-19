@@ -9,6 +9,7 @@ import exampleStore from './exampleStore.json';
 configure({ adapter: new Adapter(), disableLifecycleMethods: true });
 
 let wrapper;
+let form;
 const mockStore = configureStore([]);
 const store = mockStore(exampleStore);
 
@@ -19,9 +20,23 @@ describe('Login View', () => {
         <Login />
       </Provider>,
     );
+    form = wrapper.find('form');
   });
 
   it('should have form', () => {
-    expect(wrapper.find('form').exists()).toBeTruthy();
+    expect(form.exists()).toBeTruthy();
+  });
+
+  it('should have a user inputs', () => {
+    const inputs = form.find('input').map((i) => i.props());
+    const button = form.find('button');
+
+    expect(inputs[0].type).toEqual('text');
+    expect(inputs[0].placeholder).toEqual('Username');
+
+    expect(inputs[1].type).toEqual('password');
+    expect(inputs[1].placeholder).toEqual('Password');
+
+    expect(button.text()).toEqual('Login');
   });
 });

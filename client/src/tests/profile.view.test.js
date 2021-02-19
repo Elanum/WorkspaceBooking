@@ -18,12 +18,17 @@ describe('Profile View', () => {
   beforeEach(() => {
     wrapper = mount(
       <Provider store={store}>
-        <Profile match={{ params: { username: 'test' } }} />
+        <Profile match={{ params: { username: exampleStore.users.user.username } }} />
       </Provider>,
     );
   });
 
-  it('should not have table', () => {
-    expect(wrapper.find('table').exists()).toBeFalsy();
+  it('should have a table of bookings', () => {
+    expect(wrapper.find('table').exists()).toBeTruthy();
+  });
+
+  it('should show the user info', () => {
+    expect(wrapper.contains(exampleStore.users.user.username)).toBeTruthy();
+    expect(wrapper.contains(exampleStore.users.user.email)).toBeTruthy();
   });
 });

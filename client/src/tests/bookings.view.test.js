@@ -10,6 +10,8 @@ import exampleStore from './exampleStore.json';
 configure({ adapter: new Adapter(), disableLifecycleMethods: true });
 
 let wrapper;
+let table;
+let rows;
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 const store = mockStore(exampleStore);
@@ -21,9 +23,21 @@ describe('Bookings View', () => {
         <Bookings />
       </Provider>,
     );
+    table = wrapper.find('table');
+    rows = table.find('tr');
   });
 
   it('should have Table', () => {
-    expect(wrapper.find('table').exists()).toBeTruthy();
+    expect(table.exists()).toBeTruthy();
+  });
+
+  it('should contain two table rows', () => {
+    expect(rows).toHaveLength(2);
+  });
+
+  it('should have a table entry in Test Room', () => {
+    expect(rows.find('td')).toHaveLength(5);
+    const cols = rows.find('td').map((col) => col.text());
+    expect(cols[0]).toEqual(exampleStore.bookings.bookings[0].workspace.room.name);
   });
 });
