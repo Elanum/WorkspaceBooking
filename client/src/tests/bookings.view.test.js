@@ -3,24 +3,27 @@ import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
-import Login from './login.view';
+import thunk from 'redux-thunk';
+import Bookings from '../views/bookings.view';
+import exampleStore from './exampleStore.json';
 
 configure({ adapter: new Adapter(), disableLifecycleMethods: true });
 
 let wrapper;
-const mockStore = configureStore([]);
-const store = mockStore({ auth: { errorMessage: '' } });
+const middlewares = [thunk];
+const mockStore = configureStore(middlewares);
+const store = mockStore(exampleStore);
 
-describe('Login View', () => {
+describe('Bookings View', () => {
   beforeEach(() => {
     wrapper = mount(
       <Provider store={store}>
-        <Login />
+        <Bookings />
       </Provider>,
     );
   });
 
-  it('should have form', () => {
-    expect(wrapper.find('form').exists()).toBeTruthy();
+  it('should have Table', () => {
+    expect(wrapper.find('table').exists()).toBeTruthy();
   });
 });
