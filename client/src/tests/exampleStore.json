@@ -1,0 +1,95 @@
+{
+  "auth": {
+    "errorMessage": ""
+  },
+  "bookings": {
+    "bookings": [
+      {
+        "_id": 0,
+        "bookedAM": {
+          "username": "user"
+        },
+        "bookedPM": null,
+        "bookedState": 0,
+        "workspace": {
+          "name": "Test Workspace",
+          "room": {
+            "name": "Test Room"
+          }
+        },
+        "date": "2020-01-01"
+      }
+    ],
+    "errorMessage": ""
+  },
+  "users": {
+    "user": {
+      "username": "user",
+      "email": "test@test.de",
+      "userId": 0,
+      "bookings": [
+        {
+          "_id": 0,
+          "bookedAM": {
+            "username": "user"
+          },
+          "bookedPM": null,
+          "bookedState": 0,
+          "workspace": {
+            "name": "Test Workspace",
+            "room": {
+              "name": "Test Room"
+            }
+          },
+          "date": "2020-01-01"
+        }
+      ]
+    },
+    "errorMessage": ""
+  },
+  "workspaces": {
+    "workspaces": [
+      {
+        "_id": 0,
+        "name": "Test Workspace",
+        "room": {
+          "name": "Test Room"
+        },
+        "bookings": [
+          {
+            "_id": 0,
+            "bookedAM": {
+              "username": "user"
+            },
+            "bookedPM": null,
+            "bookedState": 0,
+            "date": "2020-01-01"
+          }
+        ]
+      }
+    ],
+    "errorMessage": "",
+    "filter": {
+      "workspaces": [
+        {
+          "_id": 0,
+          "name": "Test Workspace",
+          "room": {
+            "name": "Test Room"
+          },
+          "bookings": [
+            {
+              "_id": 0,
+              "bookedAM": {
+                "username": "user"
+              },
+              "bookedPM": null,
+              "bookedState": 0,
+              "date": "2020-01-01"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

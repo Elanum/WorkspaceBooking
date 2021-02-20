@@ -1,7 +1,7 @@
 import { shallow, configure, render } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
-import NotFound from './notfound.view';
+import NotFound from '../views/notfound.view';
 
 configure({ adapter: new Adapter() });
 

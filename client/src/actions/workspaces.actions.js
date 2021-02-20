@@ -1,13 +1,19 @@
 import axios from 'axios';
-import { BOOKINGS_ERROR, GET_WORKSPACES, WORKSPACES_ERROR } from './types';
+import {
+  BOOKINGS_ERROR,
+  FILTER_WORKSPACES,
+  GET_WORKSPACES,
+  WORKSPACES_ERROR,
+} from './types';
 import { authHeader, API_URL } from '../config/api.config';
 
-const getWorkspaces = () => async (dispatch) => {
+const getWorkspaces = (callback) => async (dispatch) => {
   axios
     .get(`${API_URL}/workspaces`, authHeader())
     .then(({ data }) => {
       dispatch({ type: GET_WORKSPACES, payload: data });
       dispatch({ type: BOOKINGS_ERROR, payload: '' });
+      callback();
     })
     .catch(({ response }) => {
       if (response) {
@@ -18,5 +24,14 @@ const getWorkspaces = () => async (dispatch) => {
     });
 };
 
-// eslint-disable-next-line import/prefer-default-export
-export { getWorkspaces };
+const filterWorkspaces = (workspaces, room) => async (dispatch) => {
+  const filteredWorkspaces = room === 'All Rooms'
+    ? workspaces
+    : workspaces.filter((workspace) => workspace.room.name === room);
+  dispatch({
+    type: FILTER_WORKSPACES,
+    payload: { workspaces: filteredWorkspaces },
+  });
+};
+
+export { getWorkspaces, filterWorkspaces };
