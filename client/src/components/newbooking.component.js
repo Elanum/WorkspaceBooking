@@ -4,7 +4,7 @@ import {
 } from 'react-bootstrap';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, Field } from 'redux-form';
+import { reduxForm, Field, reset } from 'redux-form';
 import { BOOKINGS_ERROR } from '../actions/types';
 import * as actions from '../actions';
 
@@ -133,9 +133,13 @@ function mapStateToProps(state) {
   };
 }
 
+const afterSubmit = (_result, dispatch) => {
+  dispatch(reset('newBooking'));
+};
+
 const form = {
   form: 'newBooking',
-  enableReinitialize: true,
+  onSubmitSuccess: afterSubmit,
 };
 
 export default compose(
