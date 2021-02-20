@@ -1,3 +1,16 @@
+# [1.0.0](https://github.com/Elanum/workspace-booking/compare/v0.3.0...v1.0.0) (2021-02-20)
+
+
+### Features
+
+* add filter for workspaces ([a744d4b](https://github.com/Elanum/workspace-booking/commit/a744d4b2bb7825a977c62e73093bf29eaed567c4))
+* change new booking modal ([11264b6](https://github.com/Elanum/workspace-booking/commit/11264b69f9a34639da25fef0144a56c6a768af60))
+
+
+### BREAKING CHANGES
+
+* complete new design of workspaces
+
 # [0.3.0](https://github.com/Elanum/workspace-booking/compare/v0.2.1...v0.3.0) (2021-02-07)
 
 
