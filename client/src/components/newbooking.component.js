@@ -4,23 +4,9 @@ import {
 } from 'react-bootstrap';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, Field, formValueSelector } from 'redux-form';
+import { reduxForm, Field } from 'redux-form';
 import { BOOKINGS_ERROR } from '../actions/types';
 import * as actions from '../actions';
-
-const today = new Date().toISOString().slice(0, 10);
-
-const Input = ({
-  input, type, placeholder, min,
-}) => (
-  <Form.Control
-    type={type}
-    placeholder={placeholder}
-    value={input.value}
-    onChange={input.onChange}
-    min={min}
-  />
-);
 
 const Switch = ({ input, id, disabled }) => (
   <Form.Switch
@@ -43,17 +29,20 @@ class NewBooking extends Component {
 
   onSubmit = (props) => {
     const {
-      postBookings, workspace, getWorkspaces, user,
+      postBookings, workspace, getWorkspaces, filterWorkspaces, user, date, room,
     } = this.props;
     const data = {
       workspace: workspace._id,
-      date: new Date(props.date),
+      date: new Date(date),
     };
     if (props.pm) data.bookedPM = user._id;
     if (props.am) data.bookedAM = user._id;
     postBookings(data, () => {
-      getWorkspaces();
-      this.close();
+      getWorkspaces(() => {
+        const { workspaces } = this.props;
+        filterWorkspaces(workspaces, room);
+        this.close();
+      });
     });
   };
 
@@ -69,35 +58,39 @@ class NewBooking extends Component {
 
   render() {
     const {
-      workspace, handleSubmit, errorMessage, formDate,
+      workspace, handleSubmit, errorMessage, date,
     } = this.props;
     const { showModal } = this.state;
 
     const currentWorkspace = workspace
       && workspace.bookings
-      && workspace.bookings.find((b) => b.date === formDate);
+      && workspace.bookings.find((b) => b.date === date);
 
     const bookedState = currentWorkspace && currentWorkspace.bookedState;
 
     return (
       <>
-        <Button size="sm" variant="outline-primary" onClick={this.open}>
-          Book
+        <Button
+          size="sm"
+          variant={bookedState === 1 ? 'secondary' : 'primary'}
+          onClick={this.open}
+          disabled={bookedState === 1}
+        >
+          {bookedState === 1 ? 'Occupied' : 'Book'}
         </Button>
         <Modal show={showModal} onHide={this.close}>
           <Modal.Header closeButton>New Booking</Modal.Header>
           <Modal.Body>
-            {workspace.name}
+            <div>
+              <strong>Workspace: </strong>
+              {workspace.name}
+            </div>
+            <div>
+              <strong>Date: </strong>
+              {new Date(date).toLocaleDateString()}
+            </div>
+            <br />
             <Form onSubmit={handleSubmit(this.onSubmit)}>
-              <Form.Group>
-                <Field
-                  name="date"
-                  type="date"
-                  component={Input}
-                  value={today}
-                  min={today}
-                />
-              </Form.Group>
               <Form.Group>
                 <Field
                   name="am"
@@ -133,20 +126,16 @@ class NewBooking extends Component {
 }
 
 function mapStateToProps(state) {
-  const selector = formValueSelector('newBooking');
-  const formDate = selector(state, 'date');
   return {
     errorMessage: state.bookings.errorMessage,
-    formDate,
     user: state.auth.authenticated,
+    workspaces: state.workspaces.workspaces,
   };
 }
 
 const form = {
   form: 'newBooking',
-  initialValues: {
-    date: today,
-  },
+  enableReinitialize: true,
 };
 
 export default compose(
