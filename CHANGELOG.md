@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/Elanum/workspace-booking/compare/v1.0.0...v1.0.1) (2021-02-20)
+
+
+### Bug Fixes
+
+* hotfix multiple bookings are occupied bug ([6ec654e](https://github.com/Elanum/workspace-booking/commit/6ec654e3d00271d71e853df45c412e16a1aa980c))
+
 # [1.0.0](https://github.com/Elanum/workspace-booking/compare/v0.3.0...v1.0.0) (2021-02-20)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "workspace-booking",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "workspace booking system for my bachelor thesis",
   "private": true,
   "scripts": {
