@@ -10,6 +10,8 @@ import exampleStore from './exampleStore.json';
 configure({ adapter: new Adapter(), disableLifecycleMethods: true });
 
 let wrapper;
+let input;
+let select;
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 const store = mockStore(exampleStore);
@@ -21,9 +23,24 @@ describe('Workspaces View', () => {
         <Workspaces />
       </Provider>,
     );
+    input = wrapper.find('input');
+    select = wrapper.find('select');
   });
 
-  it('should not have table', () => {
-    expect(wrapper.find('table').exists()).toBeFalsy();
+  it('should have date filter input', () => {
+    expect(input.length).toEqual(1);
+
+    const props = input.map((i) => i.props())[0];
+    expect(props.type).toEqual('date');
+  });
+
+  it('should have a room selector', () => {
+    expect(select.length).toEqual(1);
+    const options = select.find('option').map((o) => o.text());
+    expect(options[0]).toEqual('All Rooms');
+  });
+
+  it('should show the workspace', () => {
+    expect(wrapper.contains(exampleStore.workspaces.workspaces[0].name)).toBeTruthy();
   });
 });
